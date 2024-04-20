@@ -4,6 +4,7 @@ from django.urls import include, path
 from config.settings import STATIC_ROOT, STATIC_URL, MEDIA_URL, MEDIA_ROOT
 from . import views
 
+
 urlpatterns = [
     path('', views.index, name='home'),
     path("admin/", admin.site.urls),

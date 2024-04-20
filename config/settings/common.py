@@ -18,11 +18,9 @@ def get_env(key, default=None, optinal=False):
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SITE_ID = 2
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
 
 # APP CONFIGURATION
 DJANGO_APPS = (
@@ -49,6 +47,7 @@ LOCAL_APPS = (
     "accounts",
 )
 
+SITE_ID = 1
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # END APP CONFIGURATION
@@ -86,9 +85,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
-
-
-ACCOUNT_EMAIL_VERIFICATION = "none"
 
 
 # Password validation
