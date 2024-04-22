@@ -9,6 +9,7 @@ urlpatterns = [
     path('', views.index, name='home'),
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls")),
+    path("nutrition/", include("nutrition.urls")),
 ]
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)

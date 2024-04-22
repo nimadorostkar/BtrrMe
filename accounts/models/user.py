@@ -23,7 +23,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, null=True, blank=True)
     phone_number = models.CharField(validators=[phone_regex],max_length=11,unique=True,blank=False,null=False,)
     email = models.EmailField(max_length=70,null=True,blank=True,unique=True)
-    birth_date = models.DateField(null=True,blank=True)
+    age = models.IntegerField(null=True,blank=True)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
 
