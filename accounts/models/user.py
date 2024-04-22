@@ -15,7 +15,10 @@ class User(AbstractUser):
         ),
     )
 
-    username = None
+    user_type_choices = ( ("coach","coach"),("normal","normal") )
+
+    username = models.CharField(max_length=60,null=True,blank=True,unique=True)
+    user_type = models.CharField(max_length=8, default="normal", choices=user_type_choices)
     first_name = models.CharField(max_length=50,null=True,blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
     phone_number = models.CharField(validators=[phone_regex],max_length=11,unique=True,blank=False,null=False,)

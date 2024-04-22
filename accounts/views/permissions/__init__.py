@@ -1,2 +1,2 @@
-from accounts.views.permissions.is_admin import IsAdmin
-from accounts.views.permissions.is_staff import IsStaff
+from accounts.views.permissions.is_normal import IsNormal
+from accounts.views.permissions.is_coach import IsCoach

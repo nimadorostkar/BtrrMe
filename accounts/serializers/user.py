@@ -5,9 +5,18 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ("id","username","phone_number", "email", "first_name", "last_name","first_Language","birth_date","national_code","city", "is_profile_fill")
+        fields = ("id", "username", "user_type", "phone_number", "email", "first_name", "last_name", "birth_date", "is_profile_fill")
 
 
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ("first_name", "last_name", "birth_date", "username")
+
+
+
+
+'''
 
 class UserAllFieldsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,10 +25,7 @@ class UserAllFieldsSerializer(serializers.ModelSerializer):
 
 
 
-class UserUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = ("first_name","last_name","first_Language","birth_date","national_code","city")
+
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -31,4 +37,4 @@ class RegisterSerializer(serializers.ModelSerializer):
             "first_name": {"required": True},
         }
 
-
+'''

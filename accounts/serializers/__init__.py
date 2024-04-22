@@ -1,1 +1,1 @@
-from accounts.serializers.user import RegisterSerializer, UserSerializer, UserAllFieldsSerializer, UserUpdateSerializer
+from accounts.serializers.user import *

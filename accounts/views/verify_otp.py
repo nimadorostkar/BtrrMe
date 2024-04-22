@@ -52,4 +52,3 @@ class VerifyOTP(APIView):
             samesite="None",
         )
         return response
-

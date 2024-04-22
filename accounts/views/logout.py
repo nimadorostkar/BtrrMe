@@ -1,6 +1,5 @@
 from django.utils.translation import gettext as _
 from rest_framework.views import APIView
-
 from accounts.functions import expire
 from config.responses import ok
 
