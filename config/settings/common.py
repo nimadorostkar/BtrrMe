@@ -38,7 +38,9 @@ THIRD_PARTY_APPS = (
     "django_filters",
     "corsheaders",
     "gunicorn",
-    "django.contrib.sites"
+    "django.contrib.sites",
+    "ckeditor",
+    "ckeditor_uploader",
 )
 
 # Apps specific for this project go here.
@@ -46,6 +48,7 @@ THIRD_PARTY_APPS = (
 LOCAL_APPS = (
     "accounts",
     "nutrition",
+    "workout",
 )
 
 SITE_ID = 1
@@ -120,6 +123,14 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 ]
+
+
+
+MAX_UPLOAD_SIZE = 5242880
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
+
 
 
 # Internationalization
