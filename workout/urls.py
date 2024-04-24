@@ -1,6 +1,6 @@
 from django.urls import path
-from nutrition.views import NutritionList
+from workout.views import WorkoutList
 
 urlpatterns = [
-    path("list", NutritionList.as_view(), name="list"),
+    path("list", WorkoutList.as_view(), name="list"),
 ]
