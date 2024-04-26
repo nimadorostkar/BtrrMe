@@ -1,10 +1,8 @@
 import json
 import random
 import uuid
-
 from django.contrib.auth.hashers import check_password, make_password
 from django.core.cache import cache
-
 from config.settings import OTP_CODE_LENGTH, OTP_TTL
 
 
@@ -47,16 +45,6 @@ class OneTimePassword:
         ):
             raise ValueError("otp is inavlid")
         cache.delete(otp_id)
-        return data.get("user_id")
-    def verify_otp_no_delete(otp_id, otp_code):
-        if not cache.has_key(otp_id):
-            raise ValueError("otp is inavlid")
-        value = cache.get(otp_id)
-        data = json.loads(value)
-        if not check_password(
-            "{}{}".format(otp_id, otp_code), data.get("hash")
-        ):
-            raise ValueError("otp is inavlid")
         return data.get("user_id")
 
     def otp_exist(phone_number):

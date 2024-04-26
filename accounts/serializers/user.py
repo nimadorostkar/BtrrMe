@@ -1,40 +1,27 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from accounts.models import CoachProfile,UserProfile
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ("id", "username", "user_type", "phone_number", "email", "first_name", "last_name", "birth_date", "is_profile_fill")
+        fields = ("id", "username", "user_type", "phone_number", "email", "first_name", "last_name", "age", "is_profile_fill")
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ("first_name", "last_name", "birth_date", "username")
+        fields = ("first_name", "last_name", "age", "username")
 
 
-
-
-'''
-
-class UserAllFieldsSerializer(serializers.ModelSerializer):
+class CoachProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = get_user_model()
-        fields = "__all__"
+        model = CoachProfile
+        fields = '__all__'
 
 
-
-
-
-
-class RegisterSerializer(serializers.ModelSerializer):
+class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = get_user_model()
-        fields = ("email", "first_name")
-        extra_kwargs = {
-            "email": {"required": False},
-            "first_name": {"required": True},
-        }
-
-'''
+        model = UserProfile
+        fields = '__all__'

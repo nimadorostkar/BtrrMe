@@ -15,10 +15,10 @@ class User(AbstractUser):
         ),
     )
 
-    user_type_choices = ( ("coach","coach"),("normal","normal") )
+    user_type_choices = ( ("coach","coach"),("normal","normal"),("unknown","unknown") )
 
     username = models.CharField(max_length=60,null=True,blank=True,unique=True)
-    user_type = models.CharField(max_length=8, default="normal", choices=user_type_choices)
+    user_type = models.CharField(max_length=8, default="unknown", choices=user_type_choices)
     first_name = models.CharField(max_length=50,null=True,blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
     phone_number = models.CharField(validators=[phone_regex],max_length=11,unique=True,blank=False,null=False,)
@@ -36,7 +36,7 @@ class User(AbstractUser):
         return str(self.phone_number) +' | '+ str(self.first_name) +' | '+ str(self.last_name)
 
     def is_profile_fill(self):
-        if self.first_name is not None and self.last_name is not None and self.phone_number is not None and self.birth_date is not None:
+        if self.first_name is not None and self.last_name is not None and self.phone_number is not None and self.age is not None:
             return True
         else:
             return False

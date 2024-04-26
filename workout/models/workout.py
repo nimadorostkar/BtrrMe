@@ -17,6 +17,7 @@ class Workout(models.Model):
     motion_status_choices = (("خوابیده", "خوابیده"), ("ایستاده", "ایستاده"), ("نشسته", "نشسته"), ("ترکیبی", "ترکیبی"))
     type_choices = (("هوازی", "هوازی"), ("کششی", "کششی"), ("کار با وزنه", "کار با وزنه"), ("وزن بدن", "وزن بدن"))
     gender_choices = (("male", "male"),("female","female"),("all", "all"))
+    hardness_choices = (("آسان", "آسان"), ("متوسط", "متوسط"), ("سخت", "سخت"))
 
     name = models.CharField(max_length=256,unique=True)
     english_name = models.CharField(max_length=256, unique=True, null=True, blank=True)
@@ -27,6 +28,7 @@ class Workout(models.Model):
     type = models.CharField(choices=type_choices, default="کار با وزنه", max_length=128)
     equipment = models.ManyToManyField(Equipment)
     gender = models.CharField(choices=gender_choices, default="all", max_length=128)
+    hardness = models.CharField(choices=hardness_choices, default="all", max_length=128)
     image = models.ImageField(upload_to="workout",default="workout/default.png")
     video = models.ImageField(upload_to="workout_video",null=True,blank=True)
 

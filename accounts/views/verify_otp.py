@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from config import responses
 from accounts.functions import get_user_data, login
-from accounts.models import OneTimePassword
+from accounts.models import OneTimePassword, User
 from accounts.selectors import get_user
 from config.settings import ACCESS_TTL
 from accounts.serializers import UserSerializer
@@ -20,11 +20,9 @@ class VerifyOTP(APIView):
         try:
             user_id = OneTimePassword.verify_otp(otp_id, otp_code)
         except ValueError:
-            return Response(
-                {"success": False, "errors": [_("OTP is invalid")]},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        user = get_user(id=user_id) # self.request.user #
+            return Response({"success": False, "errors": [_("OTP is invalid")]}, status=status.HTTP_400_BAD_REQUEST, )
+
+        user = get_user(id=user_id)
 
         access, refresh = login(user)
 
@@ -40,9 +38,6 @@ class VerifyOTP(APIView):
             },
             status=status.HTTP_200_OK,
         )
-        #print('----------------------access-----')
-        #print(access)
-        #print('---------------------------------')
         response.set_cookie(
             "HTTP_ACCESS",
             f"Bearer {access}",
