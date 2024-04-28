@@ -12,6 +12,7 @@ urlpatterns = [
     path("nutrition/", include("nutrition.urls")),
     path("workout/", include("workout.urls")),
     path("supplement/", include("supplement.urls")),
+    path("blog/", include("blog.urls")),
 ]
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
