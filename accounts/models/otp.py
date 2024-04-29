@@ -6,6 +6,7 @@ from django.core.cache import cache
 from config.settings import OTP_CODE_LENGTH, OTP_TTL
 
 
+
 def generate_otp():
     random.seed(a=None, version=2)
     return "".join(random.choices("0123456789", k=OTP_CODE_LENGTH))

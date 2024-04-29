@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from accounts.models.user import User
 
 
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user")
     bio = models.CharField(max_length=5000,blank=True,null=True)
