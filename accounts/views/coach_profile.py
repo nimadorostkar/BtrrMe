@@ -38,7 +38,6 @@ class CoachList(GenericAPIView):
 
 
 
-
 class CoachItam(APIView):
     serializer_class = CoachProfileSerializer
     permission_classes = [AllowAny]

@@ -19,5 +19,3 @@ urlpatterns = [
     path("coach-list", CoachList.as_view(), name="coach-list"),
     path("coach-item/<int:id>", CoachItam.as_view(), name="coach-item"),
 ]
-
-
