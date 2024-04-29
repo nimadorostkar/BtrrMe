@@ -1,6 +1,7 @@
 from django.db import models
 
 
+
 class Nutrition(models.Model):
     amount_choices = (("one","one"), ("100g","100g"))
     name = models.CharField(max_length=128,unique=True)
