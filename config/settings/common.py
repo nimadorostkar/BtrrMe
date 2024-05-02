@@ -52,6 +52,7 @@ LOCAL_APPS = (
     "workout",
     "supplement",
     "blog",
+    "chat",
 )
 
 SITE_ID = 1

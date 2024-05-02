@@ -7,3 +7,4 @@ from accounts.views.profile import Profile
 from accounts.views.complete_registration import CompleteRegistration
 from accounts.views.coach import Coach,CoachGallery,CoachGalleryItem,CoachCertificate,CoachCertificateItem,CoachPost
 from accounts.views.coach_profile import CoachList, CoachItam
+from accounts.views.normal_user import NormalUser,UserOverview
