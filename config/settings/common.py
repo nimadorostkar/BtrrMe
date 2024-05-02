@@ -41,6 +41,7 @@ THIRD_PARTY_APPS = (
     "django.contrib.sites",
     "ckeditor",
     "ckeditor_uploader",
+    "import_export",
 )
 
 # Apps specific for this project go here.
@@ -146,7 +147,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_ROOT = get_env("STATIC_ROOT", default="/static/")
+STATIC_ROOT = BASE_DIR/"static"
 STATIC_URL = get_env("STATIC_URL", default="/static/")
 MEDIA_ROOT =BASE_DIR/"media"
 MEDIA_URL = get_env("MEDIA_URL", default="/media/")

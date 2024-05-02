@@ -5,6 +5,8 @@ from accounts.serializers import CoachProfileSerializer, UserSerializer, Certifi
 from rest_framework.permissions import AllowAny
 from accounts.models import User, CoachProfile, Gallery, Certificate
 from accounts.views.permissions import IsCoach
+from blog.models import Post
+from blog.serializers import PostSerializer
 
 
 class Coach(APIView):
@@ -15,7 +17,9 @@ class Coach(APIView):
         coach = CoachProfile.objects.get(user=self.request.user)
         coach_serializer = self.serializer_class(coach)
         user_serializer = UserSerializer(self.request.user)
-        resp = {"user_data":user_serializer.data,"coach_data":coach_serializer.data}
+        posts = Post.objects.filter(author=coach)
+        post_serializer = PostSerializer(posts, many=True)
+        resp = {"user_data":user_serializer.data,"coach_data":coach_serializer.data,"coach_posts":post_serializer.data}
         return Response(resp, status=status.HTTP_200_OK)
 
     def patch(self, *args, **kwargs):
@@ -134,4 +138,26 @@ class CoachCertificateItem(APIView):
             return Response("item deleted.", status=status.HTTP_200_OK)
         except:
             return Response("Something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class CoachPost(APIView):
+    serializer_class = PostSerializer
+    permission_classes = [IsCoach]
+
+    def get(self, *args, **kwargs):
+        coach = CoachProfile.objects.get(user=self.request.user)
+        posts = Post.objects.filter(author=coach)
+        serializer = self.serializer_class(posts,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, *args, **kwargs):
+        data = self.request.data
+        data['author'] = CoachProfile.objects.get(user=self.request.user).id
+        serializer = self.serializer_class(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
 

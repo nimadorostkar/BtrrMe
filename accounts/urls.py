@@ -1,6 +1,6 @@
 from django.urls import path
 from accounts.views import Logout,Profile,Refresh,RefreshAccess,SendOTP,VerifyOTP,\
-    CompleteRegistration,Coach,CoachGallery,CoachGalleryItem,CoachCertificate,CoachCertificateItem,CoachList,CoachItam
+    CompleteRegistration,Coach,CoachGallery,CoachGalleryItem,CoachCertificate,CoachCertificateItem,CoachList,CoachItam,CoachPost
 
 
 urlpatterns = [
@@ -18,4 +18,6 @@ urlpatterns = [
     path("coach-certificate-item/<int:id>", CoachCertificateItem.as_view(), name="coach-certificate-item"),
     path("coach-list", CoachList.as_view(), name="coach-list"),
     path("coach-item/<int:id>", CoachItam.as_view(), name="coach-item"),
+    path("coach-post", CoachPost.as_view(), name="coach-post"),
 ]
+

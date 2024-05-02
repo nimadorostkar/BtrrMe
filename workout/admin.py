@@ -2,6 +2,7 @@ from django.contrib import admin
 from workout.models import MainMuscle, Muscle, Equipment, Workout
 from ckeditor.widgets import CKEditorWidget
 from django import forms
+from import_export.admin import ImportExportModelAdmin
 
 
 
@@ -20,6 +21,6 @@ class EquipmentAdmin(admin.ModelAdmin):
 admin.site.register(Equipment, EquipmentAdmin)
 
 
-class WorkoutAdmin(admin.ModelAdmin):
+class WorkoutAdmin(ImportExportModelAdmin):
     list_display = ('name','muscle','motion_status','type')
 admin.site.register(Workout, WorkoutAdmin)

@@ -29,7 +29,7 @@ class Post(models.Model):
     author = models.ForeignKey(CoachProfile, on_delete=models.CASCADE)
     cover = models.ImageField(upload_to='blog_cover', default="blog_cover/default.png")
     body = RichTextField(blank=False,null=True)
-    comments = models.ManyToManyField(PostComment)
+    comments = models.ManyToManyField(PostComment,blank=True)
     post_date = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category,null=True,blank=True,on_delete=models.PROTECT)
 
