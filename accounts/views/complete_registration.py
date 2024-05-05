@@ -19,12 +19,18 @@ class CompleteRegistration(APIView):
         if serializer.is_valid():
             serializer.save()
             if data['user_type'] == "coach":
-                coach = CoachProfile()
+                if CoachProfile.objects.filter(user=user).exists():
+                    coach = CoachProfile.objects.get(user=user)
+                else:
+                    coach = CoachProfile()
                 coach.user = user
                 coach.save()
                 profile_serializer = CoachProfileSerializer(coach)
             elif data['user_type'] == "normal":
-                normal = UserProfile()
+                if UserProfile.objects.filter(user=user).exists():
+                    normal = UserProfile.objects.get(user=user)
+                else:
+                    normal = UserProfile()
                 normal.user = user
                 normal.save()
                 profile_serializer = UserProfileSerializer(normal)
