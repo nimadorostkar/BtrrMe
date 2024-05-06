@@ -22,6 +22,6 @@ urlpatterns = [
     path("coach-item/<int:id>", CoachItam.as_view(), name="coach-item"),
     path("coach-post", CoachPost.as_view(), name="coach-post"),
     # normal user
-    path("user", NormalUser.as_view(), name="user"),
-    path("user-overview", UserOverview.as_view(), name="user-overview"),
+    path("normal", NormalUser.as_view(), name="normal"),
+    path("normal-overview", UserOverview.as_view(), name="normal-overview"),
 ]
