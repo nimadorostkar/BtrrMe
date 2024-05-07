@@ -46,5 +46,13 @@ class BodyVersion(models.Model):
     description = models.CharField(max_length=4000,blank=True,null=True)
     activity_type = models.CharField(choices=CHOICES, default="فعالیت متوسط (۳ الی ۵ ساعت در هفته)", max_length=256)
     created_at = models.DateField(auto_now_add=True)
+    BMI = models.DecimalField(default=0,max_digits=5,decimal_places=2)
+    WHR = models.DecimalField(default=0,max_digits=5,decimal_places=2)
+    BMR = models.DecimalField(default=0,max_digits=5,decimal_places=2)
     def __str__(self):
         return str(self.user) + " | " + str(self.created_at)
+
+    def save(self, *args, **kwargs):
+        if not self.BMI:
+            self.BMI = 22
+        super(BodyVersion, self).save()
