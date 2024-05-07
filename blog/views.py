@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from blog.serializers import PostSerializer
+from blog.serializers import PostSerializer, PostDetailSerializer
 from blog.models import Post,Category,PostComment
 from rest_framework.permissions import AllowAny
 from accounts.views.permissions import IsCoach, IsNormal
@@ -22,7 +22,7 @@ class CustomPagination(PageNumberPagination):
 class PostList(GenericAPIView):
     permission_classes = [AllowAny]
     pagination_class = CustomPagination
-    serializer_class = PostSerializer
+    serializer_class = PostDetailSerializer
     queryset = Post.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['post_date', 'category', 'author']
@@ -42,7 +42,7 @@ class PostList(GenericAPIView):
 
 
 class PostItem(APIView):
-    serializer_class = PostSerializer
+    serializer_class = PostDetailSerializer
     permission_classes = [AllowAny]
     def get(self, *args, **kwargs):
         try:

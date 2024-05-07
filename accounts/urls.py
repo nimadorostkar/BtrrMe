@@ -1,7 +1,7 @@
 from django.urls import path
 from accounts.views import Logout,Profile,Refresh,RefreshAccess,SendOTP,VerifyOTP,\
     CompleteRegistration,Coach,CoachGallery,CoachGalleryItem,CoachCertificate,\
-    CoachCertificateItem,CoachList,CoachItam,CoachPost,NormalUser,UserOverview
+    CoachCertificateItem,CoachList,CoachItam,CoachPost,NormalUser,UserOverview,NormalUserBodyVersion,LastBodyVersion
 
 
 urlpatterns = [
@@ -24,4 +24,6 @@ urlpatterns = [
     # normal user
     path("normal", NormalUser.as_view(), name="normal"),
     path("normal-overview", UserOverview.as_view(), name="normal-overview"),
+    path("body-version", NormalUserBodyVersion.as_view(), name="body-version"),
+    path("last-body-version", LastBodyVersion.as_view(), name="last-body-version"),
 ]

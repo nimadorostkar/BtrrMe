@@ -33,6 +33,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class UserFullProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
 
 class GallerySerializer(serializers.ModelSerializer):
     class Meta:

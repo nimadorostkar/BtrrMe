@@ -20,6 +20,11 @@ class UserProfile(models.Model):
 def img_path(instance, filename):
     return 'body_version/{0}/{1}'.format(instance.user.user.phone_number, filename)
 class BodyVersion(models.Model):
+    CHOICES = (("کم تحرک (کمی یا بدون ورزش)", "کم تحرک (کمی یا بدون ورزش)"),
+               ("کم تحرک (ورزش سبک 1 تا 3 ساعت در هفته)", "کم تحرک (ورزش سبک 1 تا 3 ساعت در هفته)"),
+               ("فعالیت متوسط (۳ الی ۵ ساعت در هفته)", "فعالیت متوسط (۳ الی ۵ ساعت در هفته)"),
+               ("بسیار فعال (۶ الی ۷ ساعت در هفته)", "بسیار فعال (۶ الی ۷ ساعت در هفته)"),
+               ("فعالیت بسیار بالا (فعالیت سخت ورزشی و کاری)", "فعالیت بسیار بالا (فعالیت سخت ورزشی و کاری)"),)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     weight = models.DecimalField(default=0,max_digits=5,decimal_places=2,verbose_name="وزن")
     arm_circumference = models.DecimalField(default=0,max_digits=5,decimal_places=2,verbose_name="دور بازو")
@@ -39,6 +44,7 @@ class BodyVersion(models.Model):
     in_body_file = models.FileField(upload_to=img_path,null=True,blank=True)
     medical_checkup_file = models.FileField(upload_to=img_path,null=True,blank=True)
     description = models.CharField(max_length=4000,blank=True,null=True)
+    activity_type = models.CharField(choices=CHOICES, default="فعالیت متوسط (۳ الی ۵ ساعت در هفته)", max_length=256)
     created_at = models.DateField(auto_now_add=True)
     def __str__(self):
         return str(self.user) + " | " + str(self.created_at)
