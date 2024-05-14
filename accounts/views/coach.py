@@ -5,8 +5,8 @@ from accounts.serializers import CoachProfileSerializer, UserSerializer, Certifi
 from rest_framework.permissions import AllowAny
 from accounts.models import User, CoachProfile, Gallery, Certificate
 from accounts.views.permissions import IsCoach
-from blog.models import Post
-from blog.serializers import PostSerializer
+from blog.models import Post, Category
+from blog.serializers import PostSerializer, CategorySerializer
 
 
 class Coach(APIView):
@@ -161,3 +161,50 @@ class CoachPost(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
 
+
+class CoachPostCats(APIView):
+    serializer_class = CategorySerializer
+    permission_classes = [IsCoach]
+
+    def get(self, *args, **kwargs):
+        cats = Category.objects.all()
+        serializer = self.serializer_class(cats,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+class CoachPostItem(APIView):
+    serializer_class = PostSerializer
+    permission_classes = [IsCoach]
+
+    def get(self, *args, **kwargs):
+        try:
+            coach = CoachProfile.objects.get(user=self.request.user)
+            post = Post.objects.get(id=self.kwargs["id"],author=coach)
+            serializer = self.serializer_class(post)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response("Post not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, *args, **kwargs):
+        try:
+            coach = CoachProfile.objects.get(user=self.request.user)
+            post = Post.objects.get(id=self.kwargs["id"], author=coach)
+            data = self.request.data
+            data['author'] = coach.id
+            serializer = self.serializer_class(post, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response("Post not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, *args, **kwargs):
+        try:
+            coach = CoachProfile.objects.get(user=self.request.user)
+            post = Post.objects.get(id=self.kwargs["id"], author=coach)
+            post.delete()
+            return Response("Invoice deleted", status=status.HTTP_200_OK)
+        except:
+            return Response("Something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)

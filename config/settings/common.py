@@ -214,9 +214,9 @@ MAX_UPLOAD_SIZE = 5242880
 
 
 # CORSHEADERS CONFIGURATION
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
-CORS_ALLOWED_ORIGINS = ["http://localhost", "http://127.0.0.1"]
-CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1"]
+ALLOWED_HOSTS = ['localhost','127.0.0.1',"api.btrr.me", "btrr.me"]
+CORS_ALLOWED_ORIGINS = ["http://localhost", "http://127.0.0.1", "http://api.btrr.me", "http://btrr.me"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1", "http://api.btrr.me", "http://btrr.me"]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_REPLACE_HTTPS_REFERER = True
 CORS_ALLOW_CREDENTIALS = True

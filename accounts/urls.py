@@ -1,7 +1,8 @@
 from django.urls import path
 from accounts.views import Logout,Profile,Refresh,RefreshAccess,SendOTP,VerifyOTP,\
     CompleteRegistration,Coach,CoachGallery,CoachGalleryItem,CoachCertificate,\
-    CoachCertificateItem,CoachList,CoachItam,CoachPost,NormalUser,UserOverview,NormalUserBodyVersion,LastBodyVersion
+    CoachCertificateItem,CoachList,CoachItam,CoachPost,NormalUser,UserOverview,\
+    NormalUserBodyVersion,LastBodyVersion,CoachPostItem,CoachPostCats
 
 
 urlpatterns = [
@@ -21,6 +22,8 @@ urlpatterns = [
     path("coach-list", CoachList.as_view(), name="coach-list"),
     path("coach-item/<int:id>", CoachItam.as_view(), name="coach-item"),
     path("coach-post", CoachPost.as_view(), name="coach-post"),
+    path('coach-post-item/<int:id>', CoachPostItem.as_view(), name='coach-post-item'),
+    path("coach-post-cats", CoachPostCats.as_view(), name="coach-post-cats"),
     # normal user
     path("normal", NormalUser.as_view(), name="normal"),
     path("normal-overview", UserOverview.as_view(), name="normal-overview"),
