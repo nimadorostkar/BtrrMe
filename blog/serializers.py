@@ -26,3 +26,10 @@ class PostDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = "__all__"
+
+
+class PostEditSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ("title", "body", "category", "cover")
+

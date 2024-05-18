@@ -8,7 +8,8 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from accounts.models import User, CoachProfile, Gallery, Certificate
-
+from blog.models import Post, Category
+from blog.serializers import PostSerializer, CategorySerializer
 
 class CustomPagination(PageNumberPagination):
     page_size = 10
@@ -51,7 +52,13 @@ class CoachItam(APIView):
             gallery_serializer = GallerySerializer(gallery, many=True)
             certificate = Certificate.objects.filter(user=coach)
             certificate_serializer = CertificateSerializer(certificate, many=True)
-            resp = {"user_data": user_serializer.data, "coach_data": coach_serializer.data, "coach_gallery": gallery_serializer.data, "coach_certificate": certificate_serializer.data}
+            posts = Post.objects.filter(author=coach)
+            post_serializer = PostSerializer(posts, many=True)
+            resp = {"user_data": user_serializer.data,
+                    "coach_data": coach_serializer.data,
+                    "coach_gallery": gallery_serializer.data,
+                    "coach_certificate": certificate_serializer.data,
+                    "coach_posts": post_serializer.data}
             return Response(resp, status=status.HTTP_200_OK)
         except:
             return Response("Coach not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)

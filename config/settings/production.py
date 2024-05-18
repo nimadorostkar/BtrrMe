@@ -23,8 +23,8 @@ DATABASES = {
 
 
 # CORSHEADERS CONFIGURATION
-CORS_ALLOWED_ORIGINS = ["http://localhost", "http://127.0.0.1", "http://api.btrr.me", "http://btrr.me"]
-CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1", "http://api.btrr.me", "http://btrr.me"]
+CORS_ALLOWED_ORIGINS = ["http://localhost", "http://127.0.0.1", "http://api.btrr.me", "http://btrr.me", "https://btrr.me", "btrr.me"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1", "http://api.btrr.me", "http://btrr.me", "https://btrr.me", "btrr.me"]
 
 CORS_REPLACE_HTTPS_REFERER = True
 CORS_ALLOW_CREDENTIALS = True

@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny
 from accounts.models import User, CoachProfile, Gallery, Certificate
 from accounts.views.permissions import IsCoach
 from blog.models import Post, Category
-from blog.serializers import PostSerializer, CategorySerializer
+from blog.serializers import PostSerializer, CategorySerializer, PostEditSerializer
 
 
 class Coach(APIView):
@@ -187,18 +187,15 @@ class CoachPostItem(APIView):
             return Response("Post not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, *args, **kwargs):
-        try:
-            coach = CoachProfile.objects.get(user=self.request.user)
-            post = Post.objects.get(id=self.kwargs["id"], author=coach)
-            data = self.request.data
-            data['author'] = coach.id
-            serializer = self.serializer_class(post, data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except:
-            return Response("Post not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+        coach = CoachProfile.objects.get(user=self.request.user)
+        post = Post.objects.get(id=self.kwargs["id"], author=coach)
+        #data['author'] = coach.id
+        serializer = PostEditSerializer(post, data=self.request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
     def delete(self, *args, **kwargs):
         try:
