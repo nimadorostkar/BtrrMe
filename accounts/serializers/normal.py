@@ -7,3 +7,9 @@ class BodyVersionSerializer(serializers.ModelSerializer):
     class Meta:
         model = BodyVersion
         fields = '__all__'
+
+
+class BodyVersionCreatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BodyVersion
+        fields = '__all__'
