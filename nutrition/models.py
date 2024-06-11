@@ -7,7 +7,7 @@ class Nutrition(models.Model):
     amount_choices = (("one","one"), ("100g","100g"))
     name = models.CharField(max_length=128,unique=True)
     english_name = models.CharField(max_length=128, unique=True)
-    amount = models.CharField(max_length=20, default="normal", choices=amount_choices)
+    amount = models.CharField(max_length=20, default="100g", choices=amount_choices)
     protein = models.DecimalField(default=0, max_digits=6, decimal_places=2)
     carbo = models.DecimalField(default=0, max_digits=6, decimal_places=2)
     sugar = models.DecimalField(default=0, max_digits=6, decimal_places=2)

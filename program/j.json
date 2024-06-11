@@ -1,0 +1,42 @@
+
+{
+  "name": "sine",
+  "workouts":
+          [
+            {
+              "workout": 1,
+              "description": "testtttt",
+              "tempo": "6-6-6",
+              "sets":[
+                {"set":1, "rep":12, "rest":"00:00"},
+                {"set":2, "rep":10, "rest":"00:00"},
+                {"set":3, "rep":8, "rest":"00:00"}
+              ],
+              "super_with_next": false
+            },
+            {
+              "workout": 4,
+              "description": "testtttt",
+              "tempo": "0-0-0",
+              "sets":[
+                {"set":1, "rep":10, "rest":"00:00"},
+                {"set":2, "rep":10, "rest":"00:00"},
+                {"set":3, "rep":8, "rest":"00:00"},
+                {"set":4, "rep":8, "rest":"00:00"}
+              ],
+              "super_with_next": false
+            },
+            {
+              "workout": 23,
+              "description": "ttttttesttttt",
+              "tempo": "4-4-4",
+              "sets":[
+                {"set":1, "rep":12, "rest":"00:00"},
+                {"set":2, "rep":12, "rest":"00:00"},
+                {"set":3, "rep":12, "rest":"00:00"}
+              ],
+              "super_with_next": false
+            }
+          ]
+}
+
