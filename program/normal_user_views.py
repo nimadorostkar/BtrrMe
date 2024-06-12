@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from program.serializers import ProgramSerializer,FullProgramSerializer,Program_paymentSerializer
-from program.models import Program
+from program.models import Program,Program_payment
 from rest_framework.permissions import AllowAny
 from accounts.views.permissions import IsCoach, IsNormal
 from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
@@ -75,3 +75,48 @@ class UserProgramItem(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response("Program not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class ProgramReq(APIView):
+    serializer_class = ProgramSerializer
+    permission_classes = [IsNormal]
+    def post(self, *args, **kwargs):
+        data = self.request.data
+        data['user'] = UserProfile.objects.get(user=self.request.user).id
+        serializer = self.serializer_class(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+class ProgramPay(APIView):
+    serializer_class = Program_paymentSerializer
+    permission_classes = [IsNormal]
+    def post(self, *args, **kwargs):
+        data = self.request.data
+        data['user'] = UserProfile.objects.get(user=self.request.user).id
+        serializer = self.serializer_class(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            program = Program.objects.get(id=self.kwargs["id"])
+            program.payment = Program_payment.objects.get(id=serializer.data['id'])
+            program.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+
+
+class UserPayments(APIView):
+    serializer_class = Program_paymentSerializer
+    permission_classes = [IsNormal]
+    def get(self, *args, **kwargs):
+        try:
+            user = UserProfile.objects.get(user=self.request.user)
+            payments = Program_payment.objects.filter(user=user)
+            serializer = self.serializer_class(payments,many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response("payments not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
