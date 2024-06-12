@@ -1,7 +1,7 @@
 from django.db import models
 from accounts.models import UserProfile, CoachProfile
 from nutrition.models import Nutrition
-
+from supplement.models import Supplement
 
 
 class Workout_program(models.Model):
@@ -28,9 +28,22 @@ class Program_payment(models.Model):
     created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.id) +' | ' + str(self.program.user) + ' | ' + str(self.program.coach)
+        return str(self.id)
 
 
+
+
+
+class Supplement_program(models.Model):
+    description = models.TextField(max_length=4000, null=True, blank=True)
+class Supplement_program_table(models.Model):
+    supplement_program = models.ForeignKey(Supplement_program, on_delete=models.CASCADE)
+    supplement = models.ForeignKey(Supplement, on_delete=models.CASCADE)
+    qty = models.IntegerField(default=1)
+    time = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.id)
 
 class Nutrition_program(models.Model):
     description = models.TextField(max_length=4000, null=True, blank=True)
@@ -39,6 +52,12 @@ class Nutrition_program_table(models.Model):
     nutrition = models.ForeignKey(Nutrition, on_delete=models.CASCADE)
     qty = models.IntegerField(default=1)
     time = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.id)
+
+
+
 
 
 
@@ -64,16 +83,11 @@ class Program(models.Model):
     duration_day = models.IntegerField(default=45)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
-    payment = models.ForeignKey(Program_payment, on_delete=models.CASCADE)
-    nutrition_program = models.ForeignKey(Nutrition_program, on_delete=models.CASCADE)
-    workout_program = models.ForeignKey(Workout_program, on_delete=models.CASCADE)
+    payment = models.ForeignKey(Program_payment,on_delete=models.CASCADE,null=True,blank=True)
+    nutrition_program = models.ForeignKey(Nutrition_program,on_delete=models.CASCADE,null=True,blank=True)
+    workout_program = models.ForeignKey(Workout_program,on_delete=models.CASCADE,null=True,blank=True)
+    supplement_program = models.ForeignKey(Supplement_program,on_delete=models.CASCADE,null=True,blank=True)
 
     def __str__(self):
         return str(self.id) +' | '+ str(self.user) +' | '+ str(self.coach) +' | '+ str(self.created_at)
-
-
-
-
-
-
 
