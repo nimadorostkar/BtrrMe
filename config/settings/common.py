@@ -42,6 +42,8 @@ THIRD_PARTY_APPS = (
     "ckeditor",
     "ckeditor_uploader",
     "import_export",
+    "rest_framework_swagger",
+    "drf_yasg",
 )
 
 # Apps specific for this project go here.
