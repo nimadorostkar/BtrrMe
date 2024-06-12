@@ -5,13 +5,15 @@ from nutrition.models import Nutrition
 
 
 class Workout_program(models.Model):
-    saturday = models.CharField(max_length=1000,null=True,blank=True)
-    sunday = models.CharField(max_length=1000, null=True, blank=True)
-    monday = models.CharField(max_length=1000, null=True, blank=True)
-    tuesday = models.CharField(max_length=1000, null=True, blank=True)
-    wednesday = models.CharField(max_length=1000, null=True, blank=True)
-    thursday = models.CharField(max_length=1000, null=True, blank=True)
-    friday = models.CharField(max_length=1000, null=True, blank=True)
+    saturday = models.JSONField(max_length=10000,null=True,blank=True)
+    sunday = models.JSONField(max_length=10000, null=True, blank=True)
+    monday = models.JSONField(max_length=10000, null=True, blank=True)
+    tuesday = models.JSONField(max_length=10000, null=True, blank=True)
+    wednesday = models.JSONField(max_length=10000, null=True, blank=True)
+    thursday = models.JSONField(max_length=10000, null=True, blank=True)
+    friday = models.JSONField(max_length=10000, null=True, blank=True)
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
 
     def __str__(self):
         return str(self.id)

@@ -1,5 +1,10 @@
 from django.contrib import admin
-from program.models import Program, Program_payment, Nutrition_program_table, Nutrition_program
+from program.models import Program, Program_payment, Nutrition_program_table, Nutrition_program, Workout_program
+
+
+class Workout_programAdmin(admin.ModelAdmin):
+    list_display = ('id', 'created_at')
+admin.site.register(Workout_program, Workout_programAdmin)
 
 
 class ProgramAdmin(admin.ModelAdmin):
