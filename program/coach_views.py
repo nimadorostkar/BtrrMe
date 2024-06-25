@@ -12,6 +12,7 @@ from rest_framework.generics import GenericAPIView
 from accounts.serializers import UserSerializer, UserProfileSerializer, BodyVersionSerializer, BodyVersionCreatSerializer
 from accounts.models import User, UserProfile, BodyVersion, CoachProfile
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 
 class CustomPagination(PageNumberPagination):
@@ -80,8 +81,11 @@ class UserLastBodyVersion(APIView):
             Q(user=profile, coach=coach, status="paid-and-waiting-for-program"))
 
         if program:
-            version = BodyVersion.objects.filter(user=profile).latest('created_at')
-            serializer = self.serializer_class(version)
+            body_versions = BodyVersion.objects.filter(user=profile)
+            if not body_versions.exists():
+                get_object_or_404(BodyVersion)
+            latest_body_version = body_versions.latest('created_at')
+            serializer = self.serializer_class(latest_body_version)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response("you don't have permission to this user data.", status=status.HTTP_406_NOT_ACCEPTABLE)

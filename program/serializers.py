@@ -4,6 +4,10 @@ from accounts.serializers import CoachFullProfileSerializer,UserFullProfileSeria
 from accounts.models import BodyVersion
 from program.models import Nutrition_program, Nutrition_program_table
 from nutrition.serializers import NutritionSerializer
+from rest_framework import status
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+
 
 class Workout_programSerializer(serializers.ModelSerializer):
     class Meta:
@@ -68,8 +72,13 @@ class FullProgramWithMetricSerializer(serializers.ModelSerializer):
     version = serializers.SerializerMethodField()
 
     def get_version(self,obj):
-        version = BodyVersion.objects.filter(user=obj.user).latest('created_at')
-        return BodyVersionSerializer(version).data
+        body_versions = BodyVersion.objects.filter(user=obj.user)
+        if not body_versions.exists():
+            get_object_or_404(BodyVersion)
+        latest_body_version = body_versions.latest('created_at')
+        return BodyVersionSerializer(latest_body_version).data
+
+
     class Meta:
         model = Program
         #fields = ('user', 'version')
