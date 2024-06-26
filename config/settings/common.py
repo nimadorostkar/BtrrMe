@@ -172,8 +172,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        #"LOCATION": get_env("REDIS_URL"),
-        "LOCATION": "redis://195.214.235.46:6379/1",
+        "LOCATION": "redis://:aJrv4jOLpcx2benDqJFBX54g@elbrus.liara.cloud:34446/0",
     }
 }
 # END CACHING CONFIGURATION

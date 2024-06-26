@@ -9,7 +9,7 @@ class UserProfile(models.Model):
     image = models.ImageField(upload_to="user_img", default="user_img/default.png")
     gender_choices = (("male", "male"), ("female", "female"))
     gender = models.CharField(choices=gender_choices, default="male", max_length=128)
-    height = models.IntegerField(default=1)
+    height = models.IntegerField(default=100)
     injury = models.CharField(max_length=5000,blank=True,null=True)
     class Meta:
         verbose_name = "user profile"
