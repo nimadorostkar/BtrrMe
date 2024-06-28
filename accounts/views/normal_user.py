@@ -32,10 +32,11 @@ class NormalUserBodyVersion(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, *args, **kwargs):
-        profile = User.objects.get(id=self.request.user.id)
-        data = self.request.data
+        #profile = User.objects.get(id=self.request.user.id)
+        profile = UserProfile.objects.get(user=self.request.user)
+        data = self.request.data.copy()
         data['user'] = profile.id
-        serializer = BodyVersionCreatSerializer(data=data)
+        serializer = BodyVersionCreatSerializer(data=data,partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
