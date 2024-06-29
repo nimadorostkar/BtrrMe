@@ -2,12 +2,12 @@ from program.models import Program, Program_payment, Supplement_program, Nutriti
 from rest_framework import serializers
 from accounts.serializers import CoachFullProfileSerializer,UserFullProfileSerializer,BodyVersionSerializer
 from accounts.models import BodyVersion
-from program.models import Nutrition_program, Nutrition_program_table
+from program.models import Nutrition_program, Nutrition_program_table, Supplement_program_table
 from nutrition.serializers import NutritionSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-
+from supplement.serializers import SupplementSerializer
 
 class Workout_programSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,7 +22,18 @@ class NutritionProgramTableSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class Supplement_program_tableSerializer(serializers.ModelSerializer):
+    supplement = SupplementSerializer()
+    class Meta:
+        model = Supplement_program_table
+        fields = "__all__"
+
+
 class Supplement_programSerializer(serializers.ModelSerializer):
+    supplement_program_table = serializers.SerializerMethodField()
+    def get_supplement_program_table(self, obj):
+        supplement_table = Supplement_program_table.objects.filter(supplement_program=obj)
+        return Supplement_program_tableSerializer(supplement_table, many=True).data
     class Meta:
         model = Supplement_program
         fields = "__all__"

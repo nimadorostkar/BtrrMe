@@ -1,7 +1,7 @@
 from django.urls import path
 from program.normal_user_views import UserProgramsList,UserProgramsShortList,UserProgramItem,ProgramReq,ProgramPay,UserPayments
 from program.coach_views import CoachProgramsList,CoachProgramsShortList, UserLastBodyVersion,UserBodyVersions, CoachProgramsMetrics
-from program.coach_add_program_views import NutritionProgram
+from program.coach_add_program_views import NutritionProgram, WorkoutProgram, SupplementProgram
 
 urlpatterns = [
     path("user-programs", UserProgramsList.as_view(), name="user-programs"),
@@ -18,6 +18,8 @@ urlpatterns = [
     path('user-body-versions/<int:id>', UserBodyVersions.as_view(), name='user-body-versions'),
     #
     path('nutrition-program/<int:id>', NutritionProgram.as_view(), name='nutrition-program'),
+    path('workout-program/<int:id>', WorkoutProgram.as_view(), name='workout-program'),
+    path('supplement-program/<int:id>', SupplementProgram.as_view(), name='supplement-program'),
 ]
 
 
