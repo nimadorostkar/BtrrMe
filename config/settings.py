@@ -1,26 +1,19 @@
-from os import environ
 from pathlib import Path
+import environ
 
 
-# GET ENV UTIL
-def get_env(key, default=None, optinal=False):
-    """Return environment variables with some options."""
-    val = environ.get(key)
-    if val is not None:
-        return val
-    elif default is not None:
-        return default
-    elif not optinal:
-        raise ValueError(f"Environment variable {key} was not defined")
-# END GET ENV UTIL
+env_file = Path(__file__).resolve().parent.parent / '.env'
+env = environ.Env()
+env.read_env(env_file)
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+SECRET_KEY = env("SECRET_KEY")
+ALLOWED_HOSTS = ['localhost','127.0.0.1','api.btrr.me','btrr.me']
+SITE_ID = 1
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # APP CONFIGURATION
 DJANGO_APPS = (
@@ -32,7 +25,6 @@ DJANGO_APPS = (
     "django.contrib.admin",
     "django.contrib.admindocs",
 )
-
 THIRD_PARTY_APPS = (
     "rest_framework",
     "django_filters",
@@ -45,9 +37,6 @@ THIRD_PARTY_APPS = (
     "rest_framework_swagger",
     "drf_yasg",
 )
-
-# Apps specific for this project go here.
-
 LOCAL_APPS = (
     "accounts",
     "nutrition",
@@ -57,11 +46,14 @@ LOCAL_APPS = (
     "chat",
     "program",
 )
-
-SITE_ID = 1
-
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # END APP CONFIGURATION
+
+
+ROOT_URLCONF = "config.urls"
+WSGI_APPLICATION = "config.wsgi.application"
+AUTH_USER_MODEL = "accounts.User"
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -74,7 +66,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "config.urls"
 
 
 TEMPLATES = [
@@ -95,7 +86,30 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "config.wsgi.application"
+
+
+# DATABASE CONFIGURATION
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": env("POSTGRES_DB"),
+        "USER": env("POSTGRES_USER"),
+        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "HOST": env("POSTGRES_HOST"),
+        "PORT": env("POSTGRES_PORT"),
+    }
+}
+# END DATABASE CONFIGURATION
+
+
+# CACHING CONFIGURATION
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": env("REDIS_URL"),
+    }
+}
+# END CACHING CONFIGURATION
 
 
 
@@ -135,7 +149,6 @@ PASSWORD_HASHERS = [
 
 
 MAX_UPLOAD_SIZE = 5242880
-
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 
@@ -153,98 +166,59 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_ROOT = BASE_DIR/"static"
-STATIC_URL = get_env("STATIC_URL", default="/static/")
-MEDIA_ROOT =BASE_DIR/"media"
-MEDIA_URL = get_env("MEDIA_URL", default="/media/")
-static_file_env = get_env("STATICFILES_DIRS", optinal=True)
+STATIC_URL = "/static/"
+MEDIA_ROOT = BASE_DIR/"media"
+MEDIA_URL = "/media/"
+static_file_env = BASE_DIR/"static"
 
-STATICFILES_DIRS = (
-    static_file_env.split(",") if static_file_env is not None else ["docs/"]
-)
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# CACHING CONFIGURATION
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://:aJrv4jOLpcx2benDqJFBX54g@elbrus.liara.cloud:34446/0",
-    }
-}
-# END CACHING CONFIGURATION
 
-# AUTH USER MODEL CONFIGURATION
-AUTH_USER_MODEL = "accounts.User"
-# END AUTH USER MODEL CONFIGURATION
 
 # OTP CONFIGURATION
-OTP_CODE_LENGTH = int(get_env("OTP_CODE_LENGTH", default="4"))
-OTP_TTL = int(get_env("OTP_TTL", default="120"))
+OTP_CODE_LENGTH = int(env("OTP_CODE_LENGTH", default="4"))
+OTP_TTL = int(env("OTP_TTL", default="120"))
 # END OTP CONFIGURATION
 
 # JWT SETIINGS
-ACCESS_TTL = int(get_env("ACCESS_TTL", default="1"))  # days
-REFRESH_TTL = int(get_env("REFRESH_TTL", default="2"))  # days
+ACCESS_TTL = int(env("ACCESS_TTL", default="1"))  # days
+REFRESH_TTL = int(env("REFRESH_TTL", default="2"))  # days
+JWT_SECRET = env("SECRET_KEY")
 # END JWT SETTINGS
 
-
-
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
 
 
 # REST FRAMEWORK CONFIGURATION
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "accounts.backends.JWTAuthentication",
+        #"accounts.backends.JWTAuthentication",
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
-    "DEFAULT_THROTTLE_RATES": {"otp": get_env("OTP_THROTTLE_RATE", default="10/min"), },
+    "DEFAULT_THROTTLE_RATES": {"otp": env("OTP_THROTTLE_RATE", default="10/min"), },
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
 }
 
 # END REST FRAMEWORK CONFIGURATION
 
-MAX_UPLOAD_SIZE = 5242880
-
 
 # CORSHEADERS CONFIGURATION
-ALLOWED_HOSTS = ['localhost','127.0.0.1',"api.btrr.me", "btrr.me"]
-CORS_ALLOWED_ORIGINS = ["http://localhost", "http://127.0.0.1", "http://api.btrr.me", "http://btrr.me", "https://btrr.me", "https://api.btrr.me"]
-CSRF_TRUSTED_ORIGINS = ["http://localhost", "http://127.0.0.1", "http://api.btrr.me", "http://btrr.me", "https://btrr.me", "https://api.btrr.me"]
+CORS_ALLOWED_ORIGINS = ['http://localhost','http://127.0.0.1','https://btrr.me','https://api.btrr.me']
+CSRF_TRUSTED_ORIGINS = ['http://localhost','http://127.0.0.1','https://btrr.me','https://api.btrr.me']
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_REPLACE_HTTPS_REFERER = True
 CORS_ALLOW_CREDENTIALS = True
 # END CORSHEADERS CONFIGURATION
 
 
-
 # SMS CONFIGURATION
-KAVENEGAR_API_KEY = "7572365451704156594870726D765276525A7468646D553857503161754D683669545A6D755748517658383D"
-KAVENEGAR_TEMPLATE = "otp-verify"
+KAVENEGAR_API_KEY = env("KAVENEGAR_API_KEY")
+KAVENEGAR_TEMPLATE = env("KAVENEGAR_TEMPLATE")
 # END SMS CONFIGURATION
 
 APPEND_SLASH = True
-
-
-# ZARRINPAL CONFIGURATION
-SANDBOX = True
-ZARRINPAL_URL="https://api.zarinpal.com/pg/"
-#ZARRINPAL_MERCHANT_ID = "a5e628f8-4d52-47c9-83f1-01cf80c2bb42"
-ZARRINPAL_MERCHANT_ID = "00000000-0000-0000-0000-000000000000"
-ZP_API_REQUEST = "https://sandbox.zarinpal.com/pg/rest/WebGate/PaymentRequest.json"
-ZP_API_VERIFY = "https://sandbox.zarinpal.com/pg/rest/WebGate/PaymentVerification.json"
-ZP_API_STARTPAY = "https://sandbox.zarinpal.com/pg/StartPay/"
-ZARIN_CALL_BACK = 'https://api.ieltsways.com/order/zarinpal-verify/'
-REPORT_ZARIN_CALL_BACK = 'https://api.ieltsways.com/report/full-report-verify/'
-MEDIA_REPORT_ZARIN_CALL_BACK = 'https://api.ieltsways.com/report/media-report-verify/'
-ZARIN_SPEAKING_CALL_BACK = 'https://api.ieltsways.com/order/zarinpal-speaking-verify/'
-ZARIN_WRITING_CALL_BACK = 'https://api.ieltsways.com/order/zarinpal-writing-verify/'
-# END ZARRINPAL CONFIGURATION
