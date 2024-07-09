@@ -19,3 +19,4 @@ drf-yasg==1.21.7
 django-environ
 djangorestframework-jwt
 djangorestframework-simplejwt
+whitenoise
