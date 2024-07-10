@@ -198,8 +198,8 @@ JWT_SECRET = env("SECRET_KEY")
 # REST FRAMEWORK CONFIGURATION
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        #"accounts.backends.JWTAuthentication",
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        "accounts.backends.JWTAuthentication",
+        #'rest_framework_simplejwt.authentication.JWTAuthentication',
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
