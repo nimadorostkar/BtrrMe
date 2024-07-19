@@ -3,6 +3,7 @@ from program.normal_user_views import UserProgramsList,UserProgramsShortList,Use
 from program.coach_views import CoachProgramsList,CoachProgramsShortList, UserLastBodyVersion,UserBodyVersions, CoachProgramsMetrics
 from program.coach_add_program_views import NutritionProgram, WorkoutProgram, SupplementProgram
 
+
 urlpatterns = [
     path("user-programs", UserProgramsList.as_view(), name="user-programs"),
     path("user-programs-short-data", UserProgramsShortList.as_view(), name="user-programs-short-data"),
@@ -21,5 +22,3 @@ urlpatterns = [
     path('workout-program/<int:id>', WorkoutProgram.as_view(), name='workout-program'),
     path('supplement-program/<int:id>', SupplementProgram.as_view(), name='supplement-program'),
 ]
-
-
