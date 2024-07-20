@@ -7,7 +7,8 @@ env_file = Path(__file__).resolve().parent.parent / '.env'
 env = environ.Env()
 env.read_env(env_file)
 
-
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")

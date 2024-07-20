@@ -138,3 +138,13 @@ class CoachProgramsMetrics(GenericAPIView):
             return self.get_paginated_response(serializer.data)
         serializer = self.filter_queryset(coach_program)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+class ProgramMetricItem(APIView):
+    permission_classes = [IsCoach]
+    serializer_class = FullProgramWithMetricSerializer
+    def get(self, *args, **kwargs):
+        program = Program.objects.get(id=self.kwargs["id"])
+        serializer = self.serializer_class(program)
+        return Response(serializer.data, status=status.HTTP_200_OK)
