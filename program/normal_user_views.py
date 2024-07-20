@@ -102,6 +102,7 @@ class ProgramPay(APIView):
             serializer.save()
             program = Program.objects.get(id=self.kwargs["id"])
             program.payment = Program_payment.objects.get(id=serializer.data['id'])
+            program.status = "paid-and-waiting-for-program"
             program.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)

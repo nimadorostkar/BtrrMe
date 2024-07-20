@@ -56,6 +56,7 @@ class NutritionProgram(APIView):
                 nutrion_table.save()
 
             program.nutrition_program = nutrition_program
+            program.status = "completed"
             program.save()
 
             return Response("Nutrion program added", status=status.HTTP_200_OK)
@@ -97,6 +98,7 @@ class WorkoutProgram(APIView):
             if serializer.is_valid():
                 serializer.save()
             program.workout_program = Workout_program.objects.get(id=serializer.data["id"])
+            program.status = "completed"
             program.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
@@ -147,6 +149,7 @@ class SupplementProgram(APIView):
                 supplement_table.save()
 
             program.supplement_program = supplement_program
+            program.status = "completed"
             program.save()
 
             return Response("Supplement program added", status=status.HTTP_200_OK)
