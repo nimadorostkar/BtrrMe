@@ -7,12 +7,12 @@ from import_export.admin import ImportExportModelAdmin
 
 
 class MainMuscleAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name','english_name')
 admin.site.register(MainMuscle, MainMuscleAdmin)
 
 
 class MuscleAdmin(admin.ModelAdmin):
-    list_display = ('name','main_muscle')
+    list_display = ('name','english_name','main_muscle')
 admin.site.register(Muscle, MuscleAdmin)
 
 
