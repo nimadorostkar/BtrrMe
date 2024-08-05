@@ -18,14 +18,13 @@ class CustomPagination(PageNumberPagination):
 
 
 
-
 class WorkoutList(GenericAPIView):
     permission_classes = [AllowAny]
     pagination_class = CustomPagination
     serializer_class = WorkoutSerializer
     queryset = Workout.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['place', 'muscle', 'muscle__english_name', 'type', 'equipment', 'equipment__name', 'gender']
+    filterset_fields = ['place', 'muscle', 'muscle__english_name', 'type', 'equipment', 'equipment__name', 'gender', 'hardness']
     search_fields = ['name', 'english_name', 'description']
     ordering_fields = ['place', 'muscle', 'type', 'gender']
 
@@ -37,5 +36,4 @@ class WorkoutList(GenericAPIView):
             return self.get_paginated_response(serializer.data)
         serializer = self.filter_queryset(Workout.objects.all())
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
