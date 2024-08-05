@@ -25,7 +25,7 @@ class WorkoutList(GenericAPIView):
     serializer_class = WorkoutSerializer
     queryset = Workout.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['place', 'muscle', 'type', 'equipment', 'gender']
+    filterset_fields = ['place', 'muscle', 'muscle__english_name', 'type', 'equipment', 'equipment__name', 'gender']
     search_fields = ['name', 'english_name', 'description']
     ordering_fields = ['place', 'muscle', 'type', 'gender']
 
