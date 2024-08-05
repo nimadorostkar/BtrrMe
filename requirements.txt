@@ -20,3 +20,5 @@ django-environ
 djangorestframework-jwt
 djangorestframework-simplejwt
 whitenoise
+boto3
+django-storages

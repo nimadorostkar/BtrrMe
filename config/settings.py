@@ -32,12 +32,14 @@ THIRD_PARTY_APPS = (
     "django_filters",
     "corsheaders",
     "gunicorn",
+    "whitenoise",
     "django.contrib.sites",
     "ckeditor",
     "ckeditor_uploader",
     "import_export",
     "rest_framework_swagger",
     "drf_yasg",
+    "storages",
 )
 LOCAL_APPS = (
     "accounts",
@@ -157,6 +159,21 @@ CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 
 
 
+# Django-storages configuration
+STORAGES = {
+  "default": {
+      "BACKEND": "storages.backends.s3.S3Storage",
+  },
+  "staticfiles": {
+      "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+  },
+}
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 LANGUAGE_CODE = "en-us"
@@ -173,8 +190,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "docs")]
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = "https://studyways.storage.iran.liara.space/media/"
+MEDIA_URL = "https://studyways.storage.iran.liara.space/media/"
 
 
 
@@ -190,7 +207,7 @@ OTP_TTL = int(env("OTP_TTL", default="120"))
 
 # JWT SETIINGS
 ACCESS_TTL = int(env("ACCESS_TTL", default="1"))  # days
-REFRESH_TTL = int(env("REFRESH_TTL", default="2"))  # days
+REFRESH_TTL = int(env("REFRESH_TTL", default="5"))  # days
 JWT_SECRET = env("SECRET_KEY")
 # END JWT SETTINGS
 
