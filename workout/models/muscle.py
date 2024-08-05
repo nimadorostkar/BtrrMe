@@ -5,7 +5,7 @@ class MainMuscle(models.Model):
     name = models.CharField(max_length=256,unique=True)
     english_name = models.CharField(max_length=256, unique=True, null=True, blank=True)
     description = models.TextField(blank=True,null=True)
-    image = models.ImageField(upload_to="main_muscle",default="main_muscle/default.png")
+    image = models.ImageField(upload_to="media/main_muscle",default="media/main_muscle/default.png")
 
     def __str__(self):
         return str(self.name)
@@ -17,7 +17,7 @@ class Muscle(models.Model):
     name = models.CharField(max_length=256,unique=True)
     english_name = models.CharField(max_length=256, unique=True, null=True, blank=True)
     description = models.TextField(blank=True,null=True)
-    image = models.ImageField(upload_to="muscle",default="muscle/default.png")
+    image = models.ImageField(upload_to="media/muscle",default="media/muscle/default.png")
 
     def __str__(self):
         return str(self.name)

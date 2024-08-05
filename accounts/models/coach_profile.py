@@ -5,8 +5,8 @@ from accounts.models.user import User
 
 class CoachProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="coach")
-    image = models.ImageField(upload_to="coach_img", default="coach_img/default.png")
-    cover = models.ImageField(upload_to="coach_cover", default="coach_cover/default.png")
+    image = models.ImageField(upload_to="media/coach_img", default="media/coach_img/default.png")
+    cover = models.ImageField(upload_to="media/coach_cover", default="media/coach_cover/default.png")
     bio = models.TextField(max_length=5000,blank=True,null=True)
     gender_choices = (("male", "male"), ("female", "female"))
     gender = models.CharField(choices=gender_choices, default="male", max_length=128)
@@ -27,7 +27,7 @@ class CoachProfile(models.Model):
 class Certificate(models.Model):
     user = models.ForeignKey(CoachProfile, on_delete=models.CASCADE)
     title = models.CharField(max_length=256,null=True,blank=True)
-    image = models.ImageField(upload_to="certificate")
+    image = models.ImageField(upload_to="media/certificate")
     date = models.CharField(max_length=128,null=True,blank=True)
 
     def __str__(self):
@@ -39,7 +39,7 @@ class Certificate(models.Model):
 class Gallery(models.Model):
     user = models.ForeignKey(CoachProfile, on_delete=models.CASCADE)
     title = models.CharField(max_length=256,null=True,blank=True)
-    image = models.ImageField(upload_to="certificate")
+    image = models.ImageField(upload_to="media/gallery")
     created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):

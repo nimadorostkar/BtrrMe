@@ -161,9 +161,9 @@ CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 
 # S3 Settings
 LIARA_ENDPOINT="https://storage.iran.liara.space"
-LIARA_BUCKET_NAME="studyways"
-LIARA_ACCESS_KEY="irgq6egfseolt7e4"
-LIARA_SECRET_KEY="4154e712-daf4-4dbe-97a3-38c2a773a2cb"
+LIARA_BUCKET_NAME="btrrme"
+LIARA_ACCESS_KEY="6ntrqdo07o5hkagq"
+LIARA_SECRET_KEY="5a91b406-9602-486e-bb94-f65a92e6f91a"
 
 # S3 Settings Based on AWS (optional)
 AWS_ACCESS_KEY_ID = LIARA_ACCESS_KEY
@@ -177,12 +177,15 @@ STORAGES = {
   "default": {
       "BACKEND": "storages.backends.s3.S3Storage",
   },
+  "OPTIONS": {
+            "location": "media/",
+  },
   "staticfiles": {
       "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
   },
 }
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 
@@ -197,15 +200,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "docs")]
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-MEDIA_ROOT = "https://studyways.storage.iran.liara.space/media/"
-MEDIA_URL = "https://studyways.storage.iran.liara.space/media/"
-
+MEDIA_ROOT = "https://btrrme.storage.iran.liara.space/media/"
+MEDIA_URL = "https://btrrme.storage.iran.liara.space/media/"
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

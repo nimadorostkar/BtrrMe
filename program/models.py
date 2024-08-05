@@ -25,7 +25,7 @@ class Program_payment(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     approved = models.BooleanField(default=False)
     description = models.TextField(max_length=4000, null=True, blank=True)
-    image = models.ImageField(upload_to="payment", null=True, blank=True)
+    image = models.ImageField(upload_to="media/payment", null=True, blank=True)
     created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):

@@ -5,7 +5,7 @@ from workout.models.muscle import Muscle
 
 class Equipment(models.Model):
     name = models.CharField(max_length=128,unique=True)
-    image = models.ImageField(upload_to="equipment",default="equipment/default.png")
+    image = models.ImageField(upload_to="equipment",default="media/equipment/default.png")
 
     def __str__(self):
         return str(self.name)
@@ -29,8 +29,8 @@ class Workout(models.Model):
     equipment = models.ManyToManyField(Equipment)
     gender = models.CharField(choices=gender_choices, default="all", max_length=128)
     hardness = models.CharField(choices=hardness_choices, default="all", max_length=128)
-    image = models.ImageField(upload_to="workout",default="workout/default.png")
-    video = models.ImageField(upload_to="workout_video",null=True,blank=True)
+    image = models.ImageField(upload_to="media/workout",default="media/workout/default.png")
+    video = models.ImageField(upload_to="media/workout_video",null=True,blank=True)
 
     def __str__(self):
         return str(self.name)

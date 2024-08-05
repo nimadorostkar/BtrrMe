@@ -27,7 +27,7 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255,null=True,blank=True,unique=True)
     author = models.ForeignKey(CoachProfile, on_delete=models.CASCADE)
-    cover = models.ImageField(upload_to='blog_cover', default="blog_cover/default.png")
+    cover = models.ImageField(upload_to='media/blog_cover', default="media/blog_cover/default.png")
     body = RichTextField(blank=False,null=True)
     comments = models.ManyToManyField(PostComment,blank=True)
     post_date = models.DateTimeField(auto_now_add=True)
