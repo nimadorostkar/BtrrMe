@@ -159,6 +159,19 @@ CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 
 
 
+# S3 Settings
+LIARA_ENDPOINT="https://storage.iran.liara.space"
+LIARA_BUCKET_NAME="studyways"
+LIARA_ACCESS_KEY="irgq6egfseolt7e4"
+LIARA_SECRET_KEY="4154e712-daf4-4dbe-97a3-38c2a773a2cb"
+
+# S3 Settings Based on AWS (optional)
+AWS_ACCESS_KEY_ID = LIARA_ACCESS_KEY
+AWS_SECRET_ACCESS_KEY = LIARA_SECRET_KEY
+AWS_STORAGE_BUCKET_NAME = LIARA_BUCKET_NAME
+AWS_S3_ENDPOINT_URL = LIARA_ENDPOINT
+AWS_S3_REGION_NAME = 'us-east-1'
+
 # Django-storages configuration
 STORAGES = {
   "default": {
