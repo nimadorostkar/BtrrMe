@@ -23,6 +23,7 @@ urlpatterns = [
     path("blog/", include("blog.urls")),
     path("chat/", include("chat.urls")),
     path("program/", include("program.urls")),
+    path("contact/", include("contact.urls")),
 ]
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
