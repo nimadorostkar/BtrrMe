@@ -19,7 +19,6 @@ class CustomPagination(PageNumberPagination):
     max_page_size = 100
 
 
-
 class NutritionList(GenericAPIView):
     permission_classes = [AllowAny]
     pagination_class = CustomPagination
