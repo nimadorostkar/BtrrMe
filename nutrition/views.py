@@ -9,6 +9,8 @@ from rest_framework.pagination import LimitOffsetPagination, PageNumberPaginatio
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import GenericAPIView
+from blog.serializers import PostSerializer, PostDetailSerializer
+from blog.models import Post,Category,PostComment
 
 
 class CustomPagination(PageNumberPagination):
@@ -49,3 +51,15 @@ class NutritionItem(APIView):
         except:
             return Response("Nutrition not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
 
+
+
+class NutritionPosts(APIView):
+    serializer_class = PostSerializer
+    permission_classes = [AllowAny]
+    def get(self, *args, **kwargs):
+        try:
+            post = Post.objects.filter(category__name="تغذیه")[:3]
+            serializer = self.serializer_class(post,many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response("Posts not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
