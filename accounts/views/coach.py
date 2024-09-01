@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny
 from accounts.models import User, CoachProfile, Gallery, Certificate
 from accounts.views.permissions import IsCoach
 from blog.models import Post, Category
-from blog.serializers import PostSerializer, CategorySerializer, PostEditSerializer
+from blog.serializers import PostSerializer, CategorySerializer, PostEditSerializer, PostDetailSerializer
 
 
 class Coach(APIView):
@@ -149,13 +149,14 @@ class CoachPost(APIView):
     def get(self, *args, **kwargs):
         coach = CoachProfile.objects.get(user=self.request.user)
         posts = Post.objects.filter(author=coach)
-        serializer = self.serializer_class(posts,many=True)
+        serializer = PostDetailSerializer(posts,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, *args, **kwargs):
         data = self.request.data
-        data['author'] = CoachProfile.objects.get(user=self.request.user).id
-        serializer = self.serializer_class(data=data)
+        data2 = data.copy()
+        data2['author'] = CoachProfile.objects.get(user=self.request.user).id
+        serializer = self.serializer_class(data=data2,partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -190,7 +191,7 @@ class CoachPostItem(APIView):
         coach = CoachProfile.objects.get(user=self.request.user)
         post = Post.objects.get(id=self.kwargs["id"], author=coach)
         #data['author'] = coach.id
-        serializer = PostEditSerializer(post, data=self.request.data)
+        serializer = PostEditSerializer(post, data=self.request.data,partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

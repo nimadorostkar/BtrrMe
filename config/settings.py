@@ -19,6 +19,7 @@ SITE_ID = 1
 
 # APP CONFIGURATION
 DJANGO_APPS = (
+    "daphne",   # should be here.
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -40,6 +41,7 @@ THIRD_PARTY_APPS = (
     "rest_framework_swagger",
     "drf_yasg",
     "storages",
+    "channels",
 )
 LOCAL_APPS = (
     "accounts",
@@ -116,6 +118,22 @@ CACHES = {
     }
 }
 # END CACHING CONFIGURATION
+
+
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [("elbrus.liara.cloud", 34446)],
+            "password": "aJrv4jOLpcx2benDqJFBX54g",
+            "db": 0,
+        },
+    },
+}
+
+
+ASGI_APPLICATION = 'config.asgi.application'
 
 
 

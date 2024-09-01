@@ -53,7 +53,7 @@ class NutritionItem(APIView):
 
 
 class NutritionPosts(APIView):
-    serializer_class = PostSerializer
+    serializer_class = PostDetailSerializer
     permission_classes = [AllowAny]
     def get(self, *args, **kwargs):
         try:

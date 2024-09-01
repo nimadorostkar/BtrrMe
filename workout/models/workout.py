@@ -5,7 +5,7 @@ from workout.models.muscle import Muscle
 
 class Equipment(models.Model):
     name = models.CharField(max_length=128,unique=True)
-    image = models.ImageField(upload_to="equipment",default="media/equipment/default.png")
+    image = models.ImageField(upload_to="media/equipment",default="media/equipment/default.png")
 
     def __str__(self):
         return str(self.name)
