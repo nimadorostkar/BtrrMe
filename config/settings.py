@@ -123,12 +123,8 @@ CACHES = {
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [("elbrus.liara.cloud", 34446)],
-            "password": "aJrv4jOLpcx2benDqJFBX54g",
-            "db": 0,
-        },
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "LOCATION": env("REDIS_URL"),
     },
 }
 
