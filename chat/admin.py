@@ -1,11 +1,7 @@
 from django.contrib import admin
-from chat.models import Chat, Message
+from chat.models import ChatMessage
 
+class ChatMessageAdmin(admin.ModelAdmin):
+    list_display = ('sender','receiver')
+admin.site.register(ChatMessage, ChatMessageAdmin)
 
-class ChatAdmin(admin.ModelAdmin):
-    list_display = ('user1','user2')
-admin.site.register(Chat, ChatAdmin)
-
-class MessageAdmin(admin.ModelAdmin):
-    list_display = ('chat','user','time')
-admin.site.register(Message, MessageAdmin)

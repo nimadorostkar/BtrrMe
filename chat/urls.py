@@ -1,11 +1,10 @@
-from django.urls import path
-from chat.views import UserChatList,StartChat
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from chat.views import ChatMessageViewSet
 
+router = DefaultRouter()
+router.register(r'chat', ChatMessageViewSet)
 
 urlpatterns = [
-    path("list", UserChatList.as_view(), name="list"),
-    path("start", StartChat.as_view(), name="start"),
-    #path('workout-item/<int:id>', WorkoutItem.as_view(), name='workout-item'),
+    path('', include(router.urls)),
 ]
-
-
