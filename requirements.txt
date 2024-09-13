@@ -24,3 +24,4 @@ djangorestframework-simplejwt
 whitenoise
 boto3
 django-storages==1.14.4
+starlette
