@@ -20,6 +20,7 @@ SITE_ID = 1
 # APP CONFIGURATION
 DJANGO_APPS = (
     "daphne",   # should be here.
+    "chat",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -27,6 +28,7 @@ DJANGO_APPS = (
     "django.contrib.staticfiles",
     "django.contrib.admin",
     "django.contrib.admindocs",
+    "channels",
 )
 THIRD_PARTY_APPS = (
     "rest_framework",
@@ -41,7 +43,6 @@ THIRD_PARTY_APPS = (
     "rest_framework_swagger",
     "drf_yasg",
     "storages",
-    "channels",
 )
 LOCAL_APPS = (
     "accounts",
@@ -49,7 +50,6 @@ LOCAL_APPS = (
     "workout",
     "supplement",
     "blog",
-    "chat",
     "program",
     "contact",
 )
