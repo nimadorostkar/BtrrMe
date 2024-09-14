@@ -58,7 +58,8 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 
 ROOT_URLCONF = "config.urls"
-WSGI_APPLICATION = "config.wsgi.application"
+#WSGI_APPLICATION = "config.wsgi.application"
+ASGI_APPLICATION = "config.wsgi.application"
 AUTH_USER_MODEL = "accounts.User"
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',]
 
@@ -123,13 +124,11 @@ CACHES = {
 
 CHANNEL_LAYERS = {
     'default': {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        #"BACKEND": "channels_redis.core.RedisChannelLayer",
+        "BACKEND": "channels_redis.pubsub.RedisPubSubChannelLayer",
         "LOCATION": env("REDIS_URL"),
     },
 }
-
-
-ASGI_APPLICATION = 'config.asgi.application'
 
 
 
