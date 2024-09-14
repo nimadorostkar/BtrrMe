@@ -1,12 +1,7 @@
 from channels.middleware import BaseMiddleware
-from channels.db import database_sync_to_async
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from django.contrib.auth.models import AnonymousUser
 from accounts.backends.jwt_auth import JWTAuthentication
-from django.core.exceptions import SynchronousOnlyOperation
 from asgiref.sync import sync_to_async
 from starlette.responses import JSONResponse
-
 
 
 class JWTAuthMiddleware(BaseMiddleware):
