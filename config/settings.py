@@ -59,7 +59,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 ROOT_URLCONF = "config.urls"
 #WSGI_APPLICATION = "config.wsgi.application"
-ASGI_APPLICATION = "config.wsgi.application"
+ASGI_APPLICATION = "config.asgi.application"
 AUTH_USER_MODEL = "accounts.User"
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',]
 
