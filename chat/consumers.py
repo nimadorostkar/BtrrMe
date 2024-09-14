@@ -8,6 +8,7 @@ from asgiref.sync import sync_to_async
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         if self.scope['user'].is_anonymous:
+            print('-- is anonymous user --')
             await self.close()
 
         self.room_name = self.scope['url_route']['kwargs']['room_name']

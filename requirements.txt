@@ -19,9 +19,9 @@ channels_redis==4.2.0
 django-rest-swagger==2.2.0
 drf-yasg==1.21.7
 django-environ
-djangorestframework-jwt
-djangorestframework-simplejwt
+djangorestframework-jwt==1.0.1
+djangorestframework-simplejwt==5.3.1
 whitenoise
 boto3
 django-storages==1.14.4
-starlette
+starlette==0.38.5

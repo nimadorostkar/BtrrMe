@@ -20,5 +20,6 @@ class JWTAuthMiddleware(BaseMiddleware):
             return await super().__call__(scope, receive, send)
 
         except Exception as e:
+            print('-- error in readin headers --')
             response = JSONResponse({"error": "Invalid or missing token", "details": str(e)}, status_code=401)
             await response(scope, receive, send)
