@@ -56,7 +56,7 @@ LOCAL_APPS = (
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # END APP CONFIGURATION
 
-
+ASGI_APPLICATION = "config.asgi.application"
 ROOT_URLCONF = "config.urls"
 AUTH_USER_MODEL = "accounts.User"
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',]
@@ -118,7 +118,8 @@ CACHES = {
 }
 # END CACHING CONFIGURATION
 
-
+#WSGI_APPLICATION = "config.wsgi.application"
+ASGI_APPLICATION = "config.asgi.application"
 
 CHANNEL_LAYERS = {
     'default': {
@@ -128,8 +129,6 @@ CHANNEL_LAYERS = {
     },
 }
 
-#WSGI_APPLICATION = "config.wsgi.application"
-ASGI_APPLICATION = "config.asgi.application"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
