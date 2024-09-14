@@ -56,6 +56,7 @@ LOCAL_APPS = (
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # END APP CONFIGURATION
 
+#WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 ROOT_URLCONF = "config.urls"
 AUTH_USER_MODEL = "accounts.User"
@@ -118,13 +119,12 @@ CACHES = {
 }
 # END CACHING CONFIGURATION
 
-#WSGI_APPLICATION = "config.wsgi.application"
-ASGI_APPLICATION = "config.asgi.application"
+
 
 CHANNEL_LAYERS = {
     'default': {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        #"BACKEND": "channels_redis.pubsub.RedisPubSubChannelLayer",
+        #"BACKEND": "channels_redis.core.RedisChannelLayer",
+        "BACKEND": "channels_redis.pubsub.RedisPubSubChannelLayer",
         "LOCATION": env("REDIS_URL"),
     },
 }
