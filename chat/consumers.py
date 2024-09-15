@@ -1,8 +1,6 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from chat.models import Message
-from chat.serializers import ChatMessageSerializer
-from asgiref.sync import sync_to_async
 from accounts.models import User
 from channels.db import database_sync_to_async
 
