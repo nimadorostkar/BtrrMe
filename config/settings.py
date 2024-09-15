@@ -20,7 +20,6 @@ SITE_ID = 1
 # APP CONFIGURATION
 DJANGO_APPS = (
     "daphne",   # should be here.
-    "chat",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -52,6 +51,7 @@ LOCAL_APPS = (
     "blog",
     "program",
     "contact",
+    "chat",
 )
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # END APP CONFIGURATION
