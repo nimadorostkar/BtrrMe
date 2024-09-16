@@ -123,8 +123,8 @@ CACHES = {
 
 CHANNEL_LAYERS = {
     'default': {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        #"BACKEND": "channels_redis.pubsub.RedisPubSubChannelLayer",
+        #"BACKEND": "channels_redis.core.RedisChannelLayer",
+        "BACKEND": "channels_redis.pubsub.RedisPubSubChannelLayer",
         "LOCATION": env("REDIS_URL"),
     },
 }
