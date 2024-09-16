@@ -5,7 +5,7 @@ from chat.serializers import ChatMessageSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import viewsets
 from chat.models import Message
-
+from accounts.models import User, UserProfile, CoachProfile
 
 class ChatMessageViewSet(APIView):
     serializer_class = ChatMessageSerializer
@@ -29,6 +29,17 @@ class RoomMessageViewSet(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response("Message not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+    def post(self, *args, **kwargs):
+        try:
+            data = self.request.data
+            data["room_name"] = self.kwargs["room_name"]
+            data["user"] = self.request.user.id
+            serializer = self.serializer_class(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response("Something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
 
 
 class RoomListViewSet(APIView):
@@ -37,6 +48,20 @@ class RoomListViewSet(APIView):
     def get(self, *args, **kwargs):
         try:
             room_names = Message.objects.filter(user=self.request.user).values_list('room_name', flat=True).distinct()
-            return Response(room_names, status=status.HTTP_200_OK)
+            rooms = []
+            for item in room_names:
+                coach_id, user_id = item.split('-')
+                if self.request.user.user_type == "coach":
+                    usr = User.objects.get(id=int(user_id))
+                    usr_profile = UserProfile.objects.get(user=usr)
+                    room = {"room_name":item,"first_name":usr.first_name,"last_name":usr.last_name,"image":usr_profile.image.url}
+                elif self.request.user.user_type == "normal":
+                    usr = User.objects.get(id=int(coach_id))
+                    coach_profile = CoachProfile.objects.get(user=usr)
+                    room = {"room_name":item,"first_name": usr.first_name, "last_name": usr.last_name, "image": coach_profile.image.url}
+                else:
+                    room = {"room_name":" ", "first_name": " ", "last_name": " ", "image": " "}
+                rooms.append(room)
+            return Response(rooms, status=status.HTTP_200_OK)
         except:
             return Response("Rooms not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)

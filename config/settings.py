@@ -19,7 +19,7 @@ SITE_ID = 1
 
 # APP CONFIGURATION
 DJANGO_APPS = (
-    #"daphne",
+    "daphne",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -56,8 +56,8 @@ LOCAL_APPS = (
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # END APP CONFIGURATION
 
-WSGI_APPLICATION = "config.wsgi.application"
-#ASGI_APPLICATION = "config.asgi.application"
+#WSGI_APPLICATION = "config.wsgi.application"
+ASGI_APPLICATION = "config.asgi.application"
 ROOT_URLCONF = "config.urls"
 AUTH_USER_MODEL = "accounts.User"
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',]
