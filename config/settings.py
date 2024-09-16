@@ -19,7 +19,7 @@ SITE_ID = 1
 
 # APP CONFIGURATION
 DJANGO_APPS = (
-    "daphne",   # should be here.
+    #"daphne",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
