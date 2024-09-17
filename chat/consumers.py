@@ -8,10 +8,8 @@ from channels.db import database_sync_to_async
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        print('--4-')
         if self.scope['user'].is_anonymous:
             await self.close()
-        print('--5-')
 
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = f'chat_{self.room_name}'

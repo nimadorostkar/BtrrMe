@@ -9,16 +9,12 @@ class JWTAuthMiddleware(BaseMiddleware):
         headers = dict(scope['headers'])
         try:
             token_name, token_key = headers.get(b'authorization').decode().split()
-            print('--1--')
             print(token_name)
             if token_name == 'Bearer':
                 user, _ = await sync_to_async(JWTAuthentication().ws_authenticate)(scope)
-                print('--2--')
                 print(user)
                 scope['user'] = user
-                print('--3-')
             return await super().__call__(scope, receive, send)
-
         except Exception as e:
             print(f'-- error in reading headers: {e} --')
             response = JSONResponse({"error": "Invalid or missing token", "details": str(e)}, status_code=401)
