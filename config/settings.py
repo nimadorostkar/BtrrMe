@@ -120,13 +120,14 @@ CACHES = {
 
 
 CHANNEL_LAYERS = {
-    'default': {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        #"BACKEND": "channels_redis.pubsub.RedisPubSubChannelLayer",
-        "LOCATION": env("REDIS_URL"),
-    },
+    "default": {
+        "BACKEND": "channels_redis.pubsub.RedisPubSubChannelLayer",
+        "CONFIG": {
+            "hosts":[{
+                "address": os.getenv('REDIS_URL'),
+            }]}
+    }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
