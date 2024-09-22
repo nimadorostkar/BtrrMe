@@ -25,17 +25,8 @@ class JWTAuthentication(authentication.BaseAuthentication):
         user = get_user(id=user_id)
         return (user, None)
 
-    def ws_authenticate(self, scope):
-        headers = dict(scope['headers'])
-        access_from_header = headers.get(b'authorization')
-        if access_from_header is None:
-            return None
-        token_name, access = access_from_header.decode().split()
-        if token_name != 'Bearer':
-            return None
-        if not validate_token(access):
-            return None
-        token_data = claim_token(token=access)
+    def ws_authenticate(self, access_token):
+        token_data = claim_token(token=access_token)
         if token_data.get("type") != "access":
             return None
         user_id = token_data.get("user_id")

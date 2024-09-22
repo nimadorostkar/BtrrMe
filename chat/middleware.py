@@ -6,16 +6,15 @@ from starlette.responses import JSONResponse
 
 class JWTAuthMiddleware(BaseMiddleware):
     async def __call__(self, scope, receive, send):
-        headers = dict(scope['headers'])
+        #headers = dict(scope['headers'])
+        decoded_params = scope['query_string'].decode('utf-8')
+        access_token = decoded_params.split('=')[1]
         try:
-            token_name, token_key = headers.get(b'authorization').decode().split()
-            print(token_name)
-            if token_name == 'Bearer':
-                user, _ = await sync_to_async(JWTAuthentication().ws_authenticate)(scope)
-                print(user)
-                scope['user'] = user
+            user, _ = await sync_to_async(JWTAuthentication().ws_authenticate)(access_token)
+            print(user)
+            scope['user'] = user
             return await super().__call__(scope, receive, send)
         except Exception as e:
-            print(f'-- error in reading headers: {e} --')
+            print(f'-- error in reading token: {e} --')
             response = JSONResponse({"error": "Invalid or missing token", "details": str(e)}, status_code=401)
             await response(scope, receive, send)
