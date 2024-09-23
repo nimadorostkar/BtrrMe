@@ -5,7 +5,6 @@ from accounts.models import User
 from channels.db import database_sync_to_async
 
 
-
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         if self.scope['user'].is_anonymous:

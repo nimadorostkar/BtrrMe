@@ -50,7 +50,7 @@ class RoomListViewSet(APIView):
             room_names = Message.objects.filter(user=self.request.user).values_list('room_name', flat=True).distinct()
             rooms = []
             for item in room_names:
-                coach_id, user_id = item.split('-')
+                coach_id, user_id = item.split('_')
                 if self.request.user.user_type == "coach":
                     usr = User.objects.get(id=int(user_id))
                     usr_profile = UserProfile.objects.get(user=usr)
