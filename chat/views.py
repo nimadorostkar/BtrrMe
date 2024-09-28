@@ -6,6 +6,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import viewsets
 from chat.models import Message
 from accounts.models import User, UserProfile, CoachProfile
+from django.db.models import Q
+
 
 class ChatMessageViewSet(APIView):
     serializer_class = ChatMessageSerializer
@@ -47,7 +49,11 @@ class RoomListViewSet(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, *args, **kwargs):
         try:
-            room_names = Message.objects.filter(user=self.request.user).values_list('room_name', flat=True).distinct()
+            #room_names = Message.objects.filter(user=self.request.user).values_list('room_name', flat=True).distinct()
+            query = Q()
+            query |= Q(room_name__contains=str(self.request.user.id))
+            room_names = Message.objects.filter(query).values_list('room_name', flat=True).distinct()
+
             rooms = []
             for item in room_names:
                 coach_id, user_id = item.split('_')
@@ -63,5 +69,5 @@ class RoomListViewSet(APIView):
                     room = {"room_name":" ", "first_name": " ", "last_name": " ", "image": " "}
                 rooms.append(room)
             return Response(rooms, status=status.HTTP_200_OK)
-        except:
-            return Response("Rooms not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response(f"Rooms not found or something went wrong. {e}", status=status.HTTP_400_BAD_REQUEST)
