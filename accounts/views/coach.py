@@ -210,6 +210,7 @@ class CoachPostItem(APIView):
 
 
 
+
 class CoachWorkExperience(APIView):
     serializer_class = WorkExperienceSerializer
     permission_classes = [IsCoach]
@@ -228,3 +229,37 @@ class CoachWorkExperience(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+
+
+class WorkExperienceItem(APIView):
+    serializer_class = WorkExperienceSerializer
+    permission_classes = [IsCoach]
+
+    def get(self, *args, **kwargs):
+        try:
+            coach = CoachProfile.objects.get(user=self.request.user)
+            work_exp = WorkExperience.objects.get(id=self.kwargs["id"],user=coach)
+            serializer = self.serializer_class(work_exp)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response("Work Experience not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, *args, **kwargs):
+        coach = CoachProfile.objects.get(user=self.request.user)
+        work_exp = WorkExperience.objects.get(id=self.kwargs["id"],user=coach)
+        serializer = WorkExperienceSerializer(work_exp, data=self.request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, *args, **kwargs):
+        try:
+            coach = CoachProfile.objects.get(user=self.request.user)
+            work_exp = WorkExperience.objects.get(id=self.kwargs["id"],user=coach)
+            work_exp.delete()
+            return Response("Work Experience deleted", status=status.HTTP_200_OK)
+        except:
+            return Response("Something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
