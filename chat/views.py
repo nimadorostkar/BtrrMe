@@ -14,7 +14,7 @@ class ChatMessageViewSet(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, *args, **kwargs):
         try:
-            message = Message.objects.filter(user=self.request.user)
+            message = Message.objects.filter(user=self.request.user).order_by('-timestamp')
             serializer = self.serializer_class(message,many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
@@ -26,7 +26,7 @@ class RoomMessageViewSet(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, *args, **kwargs):
         try:
-            message = Message.objects.filter(room_name=self.kwargs["room_name"])
+            message = Message.objects.filter(room_name=self.kwargs["room_name"]).order_by('-timestamp')
             serializer = self.serializer_class(message,many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
