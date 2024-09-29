@@ -1,13 +1,14 @@
 from rest_framework import status
 from rest_framework.response import Response
-from accounts.serializers import CoachFullProfileSerializer,CoachProfileSerializer,UserSerializer,CertificateSerializer,GallerySerializer
+from accounts.serializers import CoachFullProfileSerializer,CoachProfileSerializer,UserSerializer,CertificateSerializer\
+    ,GallerySerializer,WorkExperienceSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
-from accounts.models import User, CoachProfile, Gallery, Certificate
+from accounts.models import User, CoachProfile, Gallery, Certificate, WorkExperience
 from blog.models import Post, Category
 from blog.serializers import PostSerializer, CategorySerializer
 
@@ -52,12 +53,15 @@ class CoachItam(APIView):
             gallery_serializer = GallerySerializer(gallery, many=True)
             certificate = Certificate.objects.filter(user=coach)
             certificate_serializer = CertificateSerializer(certificate, many=True)
+            work_experience = WorkExperience.objects.filter(user=coach)
+            work_experience_serializer = WorkExperienceSerializer(work_experience, many=True)
             posts = Post.objects.filter(author=coach)
             post_serializer = PostSerializer(posts, many=True)
             resp = {"user_data": user_serializer.data,
                     "coach_data": coach_serializer.data,
                     "coach_gallery": gallery_serializer.data,
                     "coach_certificate": certificate_serializer.data,
+                    "work_experience": work_experience_serializer.data,
                     "coach_posts": post_serializer.data}
             return Response(resp, status=status.HTTP_200_OK)
         except:

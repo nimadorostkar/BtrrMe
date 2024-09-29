@@ -1,9 +1,9 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from accounts.serializers import CoachProfileSerializer, UserSerializer, CertificateSerializer, GallerySerializer
+from accounts.serializers import CoachProfileSerializer, UserSerializer, CertificateSerializer, GallerySerializer, WorkExperienceSerializer
 from rest_framework.permissions import AllowAny
-from accounts.models import User, CoachProfile, Gallery, Certificate
+from accounts.models import User, CoachProfile, Gallery, Certificate, WorkExperience
 from accounts.views.permissions import IsCoach
 from blog.models import Post, Category
 from blog.serializers import PostSerializer, CategorySerializer, PostEditSerializer, PostDetailSerializer
@@ -206,3 +206,25 @@ class CoachPostItem(APIView):
             return Response("Invoice deleted", status=status.HTTP_200_OK)
         except:
             return Response("Something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class CoachWorkExperience(APIView):
+    serializer_class = WorkExperienceSerializer
+    permission_classes = [IsCoach]
+
+    def get(self, *args, **kwargs):
+        coach = CoachProfile.objects.get(user=self.request.user)
+        work_exp = WorkExperience.objects.filter(user=coach)
+        serializer = self.serializer_class(work_exp,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, *args, **kwargs):
+        data = self.request.data
+        data['user'] = CoachProfile.objects.get(user=self.request.user).id
+        serializer = self.serializer_class(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)

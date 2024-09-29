@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from accounts.models import CoachProfile,UserProfile,Gallery,Certificate
+from accounts.models import CoachProfile,UserProfile,Gallery,Certificate,WorkExperience
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -48,4 +48,10 @@ class GallerySerializer(serializers.ModelSerializer):
 class CertificateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Certificate
+        fields = '__all__'
+
+
+class WorkExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkExperience
         fields = '__all__'
