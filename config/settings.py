@@ -2,7 +2,6 @@ from pathlib import Path
 import environ
 import os
 
-
 env_file = Path(__file__).resolve().parent.parent / '.env'
 env = environ.Env()
 env.read_env(env_file)
@@ -248,7 +247,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
 }
-
 # END REST FRAMEWORK CONFIGURATION
 
 
