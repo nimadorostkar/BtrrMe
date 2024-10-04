@@ -11,7 +11,6 @@ class Equipment(models.Model):
         return str(self.name)
 
 
-
 class Workout(models.Model):
     place_choices = (("تمرین در منزل", "تمرین در منزل"), ("تمرین در باشگاه", "تمرین در باشگاه"))
     motion_status_choices = (("خوابیده", "خوابیده"), ("ایستاده", "ایستاده"), ("نشسته", "نشسته"), ("ترکیبی", "ترکیبی"))
