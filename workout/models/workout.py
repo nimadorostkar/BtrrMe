@@ -29,8 +29,9 @@ class Workout(models.Model):
     equipment = models.ManyToManyField(Equipment)
     gender = models.CharField(choices=gender_choices, default="all", max_length=128)
     hardness = models.CharField(choices=hardness_choices, default="all", max_length=128)
-    image = models.ImageField(upload_to="media/workout",default="media/workout/default.png")
-    video = models.ImageField(upload_to="media/workout_video",null=True,blank=True)
+    image = models.FileField(upload_to="media/workout",default="media/workout/default.png")
+    video_url = models.URLField(null=True, blank=True)
+    video = models.FileField(upload_to="media/workout_video",null=True,blank=True)
 
     def __str__(self):
         return str(self.name)
