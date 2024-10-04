@@ -2,7 +2,8 @@ from django.urls import path
 from accounts.views import Logout,Profile,Refresh,RefreshAccess,SendOTP,VerifyOTP,\
     CompleteRegistration,Coach,CoachGallery,CoachGalleryItem,CoachCertificate,\
     CoachCertificateItem,CoachList,CoachItam,CoachPost,NormalUser,UserOverview,\
-    NormalUserBodyVersion,LastBodyVersion,CoachPostItem,CoachPostCats,CoachWorkExperience,WorkExperienceItem
+    NormalUserBodyVersion,LastBodyVersion,CoachPostItem,CoachPostCats,CoachWorkExperience,\
+    WorkExperienceItem,CoachAthletes
 
 
 urlpatterns = [
@@ -15,6 +16,7 @@ urlpatterns = [
     path("profile", Profile.as_view(), name="profile"),
     # coach
     path("coach", Coach.as_view(), name="coach"),
+    path("coach-athletes", CoachAthletes.as_view(), name="coach-athletes"),
     path("coach-gallery", CoachGallery.as_view(), name="coach-gallery"),
     path("coach-gallery-item/<int:id>", CoachGalleryItem.as_view(), name="coach-gallery-item"),
     path("coach-certificate", CoachCertificate.as_view(), name="coach-certificate"),

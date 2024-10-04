@@ -228,8 +228,8 @@ OTP_TTL = int(env("OTP_TTL", default="120"))
 # END OTP CONFIGURATION
 
 # JWT SETIINGS
-ACCESS_TTL = int(env("ACCESS_TTL", default="1"))  # days
-REFRESH_TTL = int(env("REFRESH_TTL", default="5"))  # days
+ACCESS_TTL = int(env("ACCESS_TTL", default="3"))  # days
+REFRESH_TTL = int(env("REFRESH_TTL", default="10"))  # days
 JWT_SECRET = env("SECRET_KEY")
 # END JWT SETTINGS
 

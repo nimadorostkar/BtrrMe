@@ -13,6 +13,10 @@ class CoachProfile(models.Model):
     instagram = models.CharField(max_length=256,blank=True,null=True)
     whatsapp = models.CharField(max_length=256,blank=True,null=True)
     telegram = models.CharField(max_length=256,blank=True,null=True)
+    workout_program_price = models.CharField(max_length=256, blank=True, null=True)
+    supplement_program_price = models.CharField(max_length=256, blank=True, null=True)
+    nutrition_program_price = models.CharField(max_length=256, blank=True, null=True)
+    full_program_price = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:
         verbose_name = "coach profile"

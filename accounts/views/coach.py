@@ -263,3 +263,15 @@ class WorkExperienceItem(APIView):
             return Response("Work Experience deleted", status=status.HTTP_200_OK)
         except:
             return Response("Something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class CoachAthletes(APIView):
+    serializer_class = CoachProfileSerializer
+    permission_classes = [IsCoach]
+
+    def get(self, *args, **kwargs):
+        coach = CoachProfile.objects.get(user=self.request.user)
+        data = ' -- '
+        return Response(data, status=status.HTTP_200_OK)
