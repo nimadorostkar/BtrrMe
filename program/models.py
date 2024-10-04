@@ -74,8 +74,8 @@ class Program(models.Model):
                     ("supplement", "supplement"),
                     ("full", "full"))
 
-    status = models.CharField(max_length=40, default="new-and-payment-pending", choices=status_choices)
-    type = models.CharField(max_length=40, default="workout", choices=type_choices)
+    status = models.CharField(max_length=60, default="new-and-payment-pending", choices=status_choices)
+    type = models.CharField(max_length=60, default="workout", choices=type_choices)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     coach = models.ForeignKey(CoachProfile, on_delete=models.CASCADE)
     target = models.CharField(max_length=1000,null=True,blank=True)

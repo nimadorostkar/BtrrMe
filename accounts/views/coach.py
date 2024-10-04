@@ -3,10 +3,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from accounts.serializers import CoachProfileSerializer, UserSerializer, CertificateSerializer, GallerySerializer, WorkExperienceSerializer
 from rest_framework.permissions import AllowAny
-from accounts.models import User, CoachProfile, Gallery, Certificate, WorkExperience
+from accounts.models import User, CoachProfile, Gallery, Certificate, WorkExperience, UserProfile
 from accounts.views.permissions import IsCoach
 from blog.models import Post, Category
 from blog.serializers import PostSerializer, CategorySerializer, PostEditSerializer, PostDetailSerializer
+from program.models import Program
+from datetime import datetime, timedelta
 
 
 class Coach(APIView):
@@ -273,5 +275,27 @@ class CoachAthletes(APIView):
 
     def get(self, *args, **kwargs):
         coach = CoachProfile.objects.get(user=self.request.user)
-        data = ' -- '
-        return Response(data, status=status.HTTP_200_OK)
+        program_users = Program.objects.filter(coach=coach).values_list('user', flat=True).distinct()
+
+        user_program_userid = []
+        for user in program_users:
+            user_program_userid.append(user)
+
+        athletes = []
+        for userid in user_program_userid:
+            program = Program.objects.filter(coach=coach,user=userid).latest('created_at')
+            end_date = program.created_at + timedelta(days=program.duration_day)
+            remaining_days = (end_date - datetime.now().date()).days
+
+            athlete = {'base_user_id': program.user.user.id,
+                       'user_profile_id': program.user.id,
+                       'first_name': program.user.user.first_name,
+                       'last_name': program.user.user.last_name,
+                       'phone_number': program.user.user.phone_number,
+                       'user_image': program.user.image.url,
+                       'program_type': program.type,
+                       'program_status': program.status,
+                       'remaining_days': remaining_days}
+            athletes.append(athlete)
+
+        return Response(athletes, status=status.HTTP_200_OK)
