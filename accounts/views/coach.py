@@ -46,8 +46,6 @@ class Coach(APIView):
 
 
 
-
-
 class CoachGallery(APIView):
     serializer_class = GallerySerializer
     permission_classes = [IsCoach]
@@ -66,8 +64,6 @@ class CoachGallery(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
-
-
 
 
 
@@ -92,7 +88,6 @@ class CoachGalleryItem(APIView):
             return Response("item deleted.", status=status.HTTP_200_OK)
         except:
             return Response("Something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
-
 
 
 
@@ -298,7 +293,6 @@ class CoachAthletes(APIView):
             athletes.append(athlete)
 
         return Response(athletes, status=status.HTTP_200_OK)
-
 
 
 class CoachCounts(APIView):
