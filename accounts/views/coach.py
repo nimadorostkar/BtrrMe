@@ -286,7 +286,6 @@ class CoachAthletes(APIView):
             program = Program.objects.filter(coach=coach,user=userid).latest('created_at')
             end_date = program.created_at + timedelta(days=program.duration_day)
             remaining_days = (end_date - datetime.now().date()).days
-
             athlete = {'base_user_id': program.user.user.id,
                        'user_profile_id': program.user.id,
                        'first_name': program.user.user.first_name,
@@ -299,3 +298,18 @@ class CoachAthletes(APIView):
             athletes.append(athlete)
 
         return Response(athletes, status=status.HTTP_200_OK)
+
+
+
+class CoachCounts(APIView):
+    serializer_class = CoachProfileSerializer
+    permission_classes = [IsCoach]
+    def get(self, *args, **kwargs):
+        coach = CoachProfile.objects.get(user=self.request.user)
+
+        programs = Program.objects.filter(coach=coach)
+        program_users = programs.values_list('user', flat=True).distinct()
+        posts = Post.objects.filter(author=coach)
+
+        data = {"athletes_count":program_users.count(), "posts_count":posts.count(), "programs_count":programs.count()}
+        return Response(data, status=status.HTTP_200_OK)
