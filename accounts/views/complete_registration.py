@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from accounts.serializers import UserSerializer,UserProfileSerializer,CoachProfileSerializer
-from accounts.models import User,CoachProfile,UserProfile
+from accounts.models import User,CoachProfile,UserProfile,BodyVersion
 
 
 class CompleteRegistration(APIView):
@@ -33,6 +33,9 @@ class CompleteRegistration(APIView):
                     normal = UserProfile()
                 normal.user = user
                 normal.save()
+                metric = BodyVersion()
+                metric.user = normal
+                metric.save()
                 profile_serializer = UserProfileSerializer(normal)
             else:
                 return Response("Error in complete registration", status=status.HTTP_406_NOT_ACCEPTABLE)
