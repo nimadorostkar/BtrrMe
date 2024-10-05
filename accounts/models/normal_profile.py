@@ -18,7 +18,6 @@ class UserProfile(models.Model):
         return str(self.user.phone_number)
 
 
-
 def img_path(instance, filename):
     return 'body_version/{0}/{1}'.format(instance.user.user.phone_number, filename)
 
