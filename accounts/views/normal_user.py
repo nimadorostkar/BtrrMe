@@ -54,7 +54,7 @@ class LastBodyVersion(APIView):
         version = BodyVersion.objects.filter(user=profile)
         if not version.exists():
             get_object_or_404(BodyVersion)
-        latest_body_version = version.latest('created_at')
+        latest_body_version = version.last()
         serializer = self.serializer_class(latest_body_version)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -76,8 +76,10 @@ class UserOverview(APIView):
         if not version.exists():
             last_version = []
         else:
-            latest_body_version = version.latest('created_at')
+            latest_body_version = version.last()
             last_version = BodyVersionSerializer(latest_body_version).data
+
+
 
         chart = []
         for vrsn in version:
