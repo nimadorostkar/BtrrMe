@@ -17,7 +17,6 @@ class Workout(models.Model):
     type_choices = (("هوازی", "هوازی"), ("کششی", "کششی"), ("کار با وزنه", "کار با وزنه"), ("وزن بدن", "وزن بدن"))
     gender_choices = (("male", "male"),("female","female"),("all", "all"))
     hardness_choices = (("آسان", "آسان"), ("متوسط", "متوسط"), ("سخت", "سخت"))
-
     name = models.CharField(max_length=256,unique=True)
     english_name = models.CharField(max_length=256, unique=True, null=True, blank=True)
     description = RichTextField(max_length=5000,null=True,blank=True)

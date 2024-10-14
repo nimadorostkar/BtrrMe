@@ -11,7 +11,6 @@ class MainMuscle(models.Model):
         return str(self.name)
 
 
-
 class Muscle(models.Model):
     main_muscle = models.ForeignKey(MainMuscle, on_delete=models.CASCADE)
     name = models.CharField(max_length=256,unique=True)
@@ -21,3 +20,4 @@ class Muscle(models.Model):
 
     def __str__(self):
         return str(self.name)
+
