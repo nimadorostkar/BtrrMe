@@ -52,7 +52,7 @@ class RoomListViewSet(APIView):
             #room_names = Message.objects.filter(user=self.request.user).values_list('room_name', flat=True).distinct()
             query = Q()
             query |= Q(room_name__contains=str(self.request.user.id))
-            room_names = Message.objects.filter(query).values_list('room_name', flat=True).distinct()
+            room_names = Message.objects.filter(query).order_by('-timestamp').values_list('room_name', flat=True).distinct()
 
             rooms = []
             for item in room_names:

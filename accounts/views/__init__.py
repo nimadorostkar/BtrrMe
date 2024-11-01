@@ -8,4 +8,4 @@ from accounts.views.complete_registration import CompleteRegistration
 from accounts.views.coach import Coach,CoachGallery,CoachGalleryItem,CoachCertificate,CoachCertificateItem\
     ,CoachPost,CoachPostItem,CoachPostCats,CoachWorkExperience,WorkExperienceItem,CoachAthletes,CoachCounts
 from accounts.views.coach_profile import CoachList, CoachItam
-from accounts.views.normal_user import NormalUser,UserOverview,NormalUserBodyVersion,LastBodyVersion
+from accounts.views.normal_user import NormalUser,UserOverview,NormalUserBodyVersion,LastBodyVersion,VersionItem

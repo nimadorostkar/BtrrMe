@@ -27,7 +27,7 @@ class NormalUserBodyVersion(APIView):
     permission_classes = [IsNormal]
     def get(self, *args, **kwargs):
         profile = UserProfile.objects.get(user=self.request.user)
-        versions = BodyVersion.objects.filter(user=profile)
+        versions = BodyVersion.objects.filter(user=profile).order_by('-created_at')
         serializer = self.serializer_class(versions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -54,7 +54,7 @@ class LastBodyVersion(APIView):
         version = BodyVersion.objects.filter(user=profile)
         if not version.exists():
             get_object_or_404(BodyVersion)
-        latest_body_version = version.last()
+        latest_body_version = version.latest('created_at')
         serializer = self.serializer_class(latest_body_version)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -71,12 +71,12 @@ class UserOverview(APIView):
         profile_serializer = self.serializer_class(profile)
         user_serializer = UserSerializer(self.request.user)
 
-        version = BodyVersion.objects.filter(user=profile)
+        version = BodyVersion.objects.filter(user=profile).order_by('-created_at')
 
         if not version.exists():
             last_version = []
         else:
-            latest_body_version = version.last()
+            latest_body_version = version.latest('created_at')
             last_version = BodyVersionSerializer(latest_body_version).data
 
 
@@ -92,3 +92,38 @@ class UserOverview(APIView):
                 "versions_list": BodyVersionSerializer(version, many=True).data,
                 "chart": chart}
         return Response(resp, status=status.HTTP_200_OK)
+
+
+
+
+class VersionItem(APIView):
+    serializer_class = BodyVersionSerializer
+    permission_classes = [IsNormal]
+
+    def get(self, *args, **kwargs):
+        try:
+            profile = UserProfile.objects.get(user=self.request.user)
+            version = BodyVersion.objects.get(id=self.kwargs["id"],user=profile)
+            serializer = self.serializer_class(version)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response("Version not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, *args, **kwargs):
+        profile = UserProfile.objects.get(user=self.request.user)
+        version = BodyVersion.objects.get(id=self.kwargs["id"], user=profile)
+        serializer = self.serializer_class(version, data=self.request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def delete(self, *args, **kwargs):
+        try:
+            profile = UserProfile.objects.get(user=self.request.user)
+            version = BodyVersion.objects.get(id=self.kwargs["id"], user=profile)
+            version.delete()
+            return Response("Version deleted", status=status.HTTP_200_OK)
+        except:
+            return Response("Something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)

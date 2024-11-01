@@ -71,7 +71,7 @@ class BodyVersion(models.Model):
     medical_checkup_file = models.FileField(upload_to=img_path,null=True,blank=True)
     description = models.CharField(max_length=4000,blank=True,null=True)
     activity_type = models.CharField(choices=CHOICES, default="فعالیت متوسط (۳ الی ۵ ساعت در هفته)", max_length=256)
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     BMI = models.DecimalField(default=0,max_digits=5,decimal_places=2)
     WHR = models.DecimalField(default=0,max_digits=5,decimal_places=2)
     BMR = models.DecimalField(default=0,max_digits=6,decimal_places=2)
