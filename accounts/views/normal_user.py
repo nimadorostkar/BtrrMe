@@ -1,10 +1,67 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from accounts.serializers import UserSerializer, UserProfileSerializer, BodyVersionSerializer, BodyVersionCreatSerializer
+from accounts.serializers import UserSerializer, UserProfileSerializer, BodyVersionSerializer, \
+    BodyVersionCreatSerializer, UserUpdateSerializer
 from accounts.models import User, UserProfile, BodyVersion
 from accounts.views.permissions import IsNormal
 from django.shortcuts import get_object_or_404
+
+
+
+class normal_profile(APIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsNormal]
+    def get(self, *args, **kwargs):
+        normal_profile = UserProfile.objects.get(user=self.request.user)
+        normal_serializer = self.serializer_class(normal_profile)
+        user_serializer = UserSerializer(self.request.user)
+        version = BodyVersion.objects.filter(user=normal_profile).order_by('-created_at')
+
+        if not version.exists():
+            last_version = []
+        else:
+            latest_body_version = version.latest('created_at')
+            last_version = BodyVersionSerializer(latest_body_version).data
+
+        chart = []
+        for vrsn in version:
+            vrsn_item = {"weight": vrsn.weight, "date": vrsn.created_at, "img": vrsn.front_double_biceps.url}
+            chart.append(vrsn_item)
+
+        resp = {"user_data":user_serializer.data,
+                "profile_data":normal_serializer.data,
+                "last_version": last_version,
+                "versions_list": BodyVersionSerializer(version, many=True).data,
+                "chart": chart}
+        return Response(resp, status=status.HTTP_200_OK)
+
+    def patch(self, *args, **kwargs):
+        user = self.request.user
+        data = self.request.data
+        user_serializer = UserUpdateSerializer(user, data=data, partial=True)
+        if user_serializer.is_valid():
+            user_serializer.save()
+        normal_profile = UserProfile.objects.get(user=self.request.user)
+        serializer = self.serializer_class(normal_profile, data=data, partial=True)
+        data['user'] = normal_profile.user.id
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+    def post(self, *args, **kwargs):
+        normal_profile = UserProfile.objects.get(user=self.request.user)
+        serializer = self.serializer_class(normal_profile, data=self.request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+
+
+
 
 
 class NormalUser(APIView):

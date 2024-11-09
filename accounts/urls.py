@@ -3,7 +3,7 @@ from accounts.views import Logout,Profile,Refresh,RefreshAccess,SendOTP,VerifyOT
     CompleteRegistration,Coach,CoachGallery,CoachGalleryItem,CoachCertificate,\
     CoachCertificateItem,CoachList,CoachItam,CoachPost,NormalUser,UserOverview,\
     NormalUserBodyVersion,LastBodyVersion,CoachPostItem,CoachPostCats,CoachWorkExperience,\
-    WorkExperienceItem,CoachAthletes,CoachCounts,VersionItem
+    WorkExperienceItem,CoachAthletes,CoachCounts,VersionItem,CoachFull,NormalFull
 
 
 urlpatterns = [
@@ -16,6 +16,7 @@ urlpatterns = [
     path("profile", Profile.as_view(), name="profile"),
     # coach
     path("coach", Coach.as_view(), name="coach"),
+    path("coach-full", CoachFull.as_view(), name="coach-full"),
     path("coach-athletes", CoachAthletes.as_view(), name="coach-athletes"),
     path("coach-counts", CoachCounts.as_view(), name="coach-counts"),
     path("coach-gallery", CoachGallery.as_view(), name="coach-gallery"),
@@ -31,6 +32,7 @@ urlpatterns = [
     path('work-exp-item/<int:id>', WorkExperienceItem.as_view(), name='work-exp-item'),
     # normal user
     path("normal", NormalUser.as_view(), name="normal"),
+    path("normal-full", NormalFull.as_view(), name="normal-full"),
     path("normal-overview", UserOverview.as_view(), name="normal-overview"),
     path("body-version", NormalUserBodyVersion.as_view(), name="body-version"),
     path("last-body-version", LastBodyVersion.as_view(), name="last-body-version"),
