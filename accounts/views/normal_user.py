@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 
 
 
-class normal_profile(APIView):
+class NormalFull(APIView):
     serializer_class = UserProfileSerializer
     permission_classes = [IsNormal]
     def get(self, *args, **kwargs):
