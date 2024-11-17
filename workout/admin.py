@@ -5,7 +5,6 @@ from django import forms
 from import_export.admin import ImportExportModelAdmin
 
 
-
 class MainMuscleAdmin(admin.ModelAdmin):
     list_display = ('name','english_name')
 admin.site.register(MainMuscle, MainMuscleAdmin)
