@@ -10,6 +10,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import GenericAPIView
 from accounts.models import UserProfile
+from datetime import datetime
+from openai import OpenAI
+from django.utils import timezone
+from django.http import JsonResponse
 
 class CustomPagination(PageNumberPagination):
     page_size = 10
@@ -75,6 +79,78 @@ class UserProgramItem(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response("Program not found or something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+class ProgramReqAI(APIView):
+    serializer_class = ProgramSerializer
+    permission_classes = [AllowAny]
+    def post(self, *args, **kwargs):
+        prompt = """
+        You are a fitness coach and expert in designing effective workout programs. 
+        Create a structured 5-day fitness workout program tailored for an intermediate individual with the following details:
+
+        - User Information:
+          - Profession: Professional bodybuilder with 7 years of training experience.
+          - Goal: Increase muscle mass and burn fat.
+          - Training Frequency: 5 days per week.
+
+        - Equipment Available:
+          - Barbell, benches, dumbbells, cables, treadmill.
+
+        - Requirements:
+          - Include at least 10 exercises for each training day.
+          - Specify the number of sets and reps for each exercise.
+          - Focus on progressive overload and balanced muscle group targeting.
+          - Integrate cardio for fat-burning where necessary.
+
+        - Output:
+          - Return the plan in a clean JSON format, structured as follows:
+            {
+              "Saturday": {
+                "muscle_name":"Chest day",
+                "Exercises": [
+                  {
+                    "Name": "Exercise Name",
+                    "Sets": Number,
+                    "Reps": Number
+                  },
+                  ...
+                ]
+              },
+              ...
+            }
+        """
+
+        assistant = "As a sports assistant, you can provide him with a sports program based on the user's information"
+
+        try:
+            client = OpenAI(
+                api_key="ttttt")
+            response = client.chat.completions.create(
+                model="gpt-4",  # Replace with your desired model gpt-4o-mini
+                messages=[
+                    {"role": "user", "content": prompt},
+                    {"role": "system", "content": assistant},
+                ],
+                max_tokens=2000,  # Adjust as needed
+                stop=None,
+                temperature=0.7)
+            # final_response = response.choices[0].message['content']
+            response_dict = response.model_dump()
+            message_content = response_dict['choices'][0]['message']['content']
+            print('---------------')
+            print(message_content)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(message_content, status=status.HTTP_200_OK)
+
+
+
+
+
 
 
 

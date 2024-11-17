@@ -25,3 +25,4 @@ whitenoise
 boto3
 django-storages==1.14.4
 starlette==0.38.5
+openai==1.46.0
