@@ -38,3 +38,13 @@ class Workout(models.Model):
 
     def img(self):
         return format_html("<img width=40 src='{}'>".format(self.image.url))
+
+    def vid(self):
+        if self.video:
+            return format_html("<h5 style='color:green;'>Yes</h5>")
+        return format_html("<h5 style='color:red;'>No</h5>")
+
+    def vid_url(self):
+        if self.video_url:
+            return format_html("<h5 style='color:green;'>Yes</h5>")
+        return format_html("<h5 style='color:red;'>No</h5>")
