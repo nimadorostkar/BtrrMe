@@ -1,6 +1,7 @@
 from django.db import models
 from ckeditor.fields import RichTextField
 from workout.models.muscle import Muscle
+from django.utils.html import format_html
 
 
 class Equipment(models.Model):
@@ -21,7 +22,7 @@ class Workout(models.Model):
     name = models.CharField(max_length=256,unique=True)
     english_name = models.CharField(max_length=256, unique=True, null=True, blank=True)
     description = RichTextField(max_length=5000,null=True,blank=True)
-    muscle = models.ForeignKey(Muscle,on_delete=models.CASCADE)
+    muscle = models.ManyToManyField(Muscle)
     place = models.CharField(choices=place_choices, default="تمرین در باشگاه", max_length=128)
     motion_status = models.CharField(choices=motion_status_choices, default="ترکیبی", max_length=128)
     type = models.CharField(choices=type_choices, default="کار با وزنه", max_length=128)
@@ -34,3 +35,6 @@ class Workout(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+    def img(self):
+        return format_html("<img width=40 src='{}'>".format(self.image))

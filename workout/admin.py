@@ -22,5 +22,5 @@ admin.site.register(Equipment, EquipmentAdmin)
 
 
 class WorkoutAdmin(ImportExportModelAdmin):
-    list_display = ('name','muscle','motion_status','type')
+    list_display = ('name','english_name','motion_status','type','img','id')
 admin.site.register(Workout, WorkoutAdmin)
