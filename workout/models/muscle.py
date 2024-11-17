@@ -8,7 +8,7 @@ class MainMuscle(models.Model):
     image = models.ImageField(upload_to="media/main_muscle",default="media/main_muscle/default.png")
 
     def __str__(self):
-        return str(self.name)
+        return str(self.name) +" | "+ str(self.english_name)
 
 
 class Muscle(models.Model):
@@ -19,5 +19,5 @@ class Muscle(models.Model):
     image = models.ImageField(upload_to="media/muscle",default="media/muscle/default.png")
 
     def __str__(self):
-        return str(self.name)
+        return str(self.name) +" | "+ str(self.english_name)
 
