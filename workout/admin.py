@@ -22,5 +22,7 @@ admin.site.register(Equipment, EquipmentAdmin)
 
 
 class WorkoutAdmin(ImportExportModelAdmin):
-    list_display = ('name','english_name','motion_status','type','img','id')
+    list_display = ('img','name','english_name','motion_status','type','id')
+    list_filter = ("type", "muscle", "equipment","place")
+    search_fields = ['name', 'english_name', 'description']
 admin.site.register(Workout, WorkoutAdmin)

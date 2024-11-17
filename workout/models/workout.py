@@ -26,7 +26,7 @@ class Workout(models.Model):
     place = models.CharField(choices=place_choices, default="تمرین در باشگاه", max_length=128)
     motion_status = models.CharField(choices=motion_status_choices, default="ترکیبی", max_length=128)
     type = models.CharField(choices=type_choices, default="کار با وزنه", max_length=128)
-    equipment = models.ManyToManyField(Equipment)
+    equipment = models.ManyToManyField(Equipment, blank=True)
     gender = models.CharField(choices=gender_choices, default="all", max_length=128)
     hardness = models.CharField(choices=hardness_choices, default="all", max_length=128)
     image = models.ImageField(upload_to="media/workout",default="media/workout/default.png")
@@ -37,4 +37,4 @@ class Workout(models.Model):
         return str(self.name)
 
     def img(self):
-        return format_html("<img width=40 src='{}'>".format(self.image))
+        return format_html("<img width=40 src='{}'>".format(self.image.url))
