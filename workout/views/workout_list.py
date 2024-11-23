@@ -36,4 +36,3 @@ class WorkoutList(GenericAPIView):
             return self.get_paginated_response(serializer.data)
         serializer = self.filter_queryset(Workout.objects.all())
         return Response(serializer.data, status=status.HTTP_200_OK)
-

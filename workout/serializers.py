@@ -12,7 +12,7 @@ class MuscleSerializer(serializers.ModelSerializer):
 
 
 class WorkoutSerializer(serializers.ModelSerializer):
-    muscle = MuscleSerializer(read_only=True)
+    muscle = MuscleSerializer(many=True,read_only=True)
     equipment = EquipmentSerializer(many=True, read_only=True)
     class Meta:
         model = Workout
