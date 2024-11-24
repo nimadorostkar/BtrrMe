@@ -264,4 +264,17 @@ KAVENEGAR_API_KEY = env("KAVENEGAR_API_KEY")
 KAVENEGAR_TEMPLATE = env("KAVENEGAR_TEMPLATE")
 # END SMS CONFIGURATION
 
+
+# ZARRINPAL CONFIGURATION
+#SANDBOX = True
+#ZARINPAL_SIMULATION = True
+ZARRINPAL_URL="https://api.zarinpal.com/pg/"
+ZARRINPAL_MERCHANT_ID = "00000000-0000-0000-0000-000000000000"
+ZP_API_REQUEST = "https://www.zarinpal.com/pg/rest/WebGate/PaymentRequest.json"
+ZP_API_VERIFY = "https://www.zarinpal.com/pg/rest/WebGate/PaymentVerification.json"
+ZP_API_STARTPAY = "https://www.zarinpal.com/pg/StartPay/"
+ZARIN_CALL_BACK = 'https://api.btrr.me/program/pay-verify/'
+# END ZARRINPAL CONFIGURATION
+
+
 APPEND_SLASH = True

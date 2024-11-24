@@ -111,3 +111,14 @@ class Program(models.Model):
             self.status = "expired"
             self.save()
         return remaining_days
+
+    def price(self):
+        if self.type == "nutrition":
+            price = self.coach.nutrition_program_price
+        elif self.type == "workout":
+            price = self.coach.workout_program_price
+        elif self.type == "supplement":
+            price = self.coach.supplement_program_price
+        elif self.type == "full":
+            price = self.coach.full_program_price
+        return price

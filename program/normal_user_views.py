@@ -13,7 +13,14 @@ from accounts.models import UserProfile
 from datetime import datetime
 from openai import OpenAI
 from django.utils import timezone
-from django.http import JsonResponse
+import json
+import requests
+from django.conf import settings
+from django.db import transaction
+from config.responses import bad_request, SuccessResponse, UnsuccessfulResponse
+from django.http import HttpResponse,JsonResponse
+from django.shortcuts import redirect
+from decimal import Decimal
 
 
 class CustomPagination(PageNumberPagination):
@@ -145,7 +152,7 @@ class ProgramReqAI(APIView):
             print('---------------')
             print(message_content)
         except Exception as e:
-            return JsonResponse({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(message_content, status=status.HTTP_200_OK)
 
 
@@ -168,21 +175,67 @@ class ProgramReq(APIView):
         return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
+
+
 class ProgramPay(APIView):
     serializer_class = TransactionSerializer
     permission_classes = [IsNormal]
-    def post(self, *args, **kwargs):
-        data = self.request.data
-        data['user'] = UserProfile.objects.get(user=self.request.user).id
-        serializer = self.serializer_class(data=data)
-        if serializer.is_valid():
-            serializer.save()
+    def get(self, *args, **kwargs):
+        authority = self.request.query_params.get("Authority")
+        status = self.request.query_params.get("Status")
+
+        try:
             program = Program.objects.get(id=self.kwargs["id"])
-            program.payment = Transaction.objects.get(id=serializer.data['id'])
-            program.status = "paid-and-waiting-for-program"
-            program.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        print('-----')
+        print(program.price())
+
+        data = {
+            "MerchantID": settings.ZARRINPAL_MERCHANT_ID,
+            "Amount": program.price(),
+            "Description": "هزینه دریافت برنامه آنلاین از بترمی",
+            "Authority": authority,
+            "Phone": program.user.user.phone_number,
+            "CallbackURL": settings.ZARIN_CALL_BACK + str(program.id) + "/",
+            "OrderID": program.id,
+            "wages": [{
+                "iban": "33333333333",
+                "amount": Decimal(program.price())*Decimal("0.15"),
+                "description": "تسهیم سود فروش از برنامه"
+              }],
+            }
+        data = json.dumps(data)
+        headers = {'content-type': 'application/json', 'content-length': str(len(data))}
+
+        try:
+            response = requests.post(settings.ZP_API_REQUEST, data=data, headers=headers, timeout=10)
+            response.raise_for_status()
+
+            if response.status_code == 200:
+                response = response.json()
+                print('---------------')
+                print(response)
+                if response['Status'] == 100:
+                    transaction = Transaction(user=program.user,price=program.price(),paid=True,authority=response['Authority'])
+                    transaction.save()
+                    program.payment = transaction
+                    program.status = "paid-and-waiting-for-program"
+                    program.save()
+                    transaction_serializer = TransactionSerializer(transaction)
+                    data = {'status': True, 'url': settings.ZP_API_STARTPAY + str(response['Authority']),
+                            'order': program.id, 'authority': response['Authority']}
+                    return SuccessResponse(transaction_serializer.data, data)
+                else:
+                    return Response(response['errors'], status=400)
+            return response
+
+        except requests.exceptions.Timeout:
+            return {'status': False, 'code': 'timeout'}
+        except requests.exceptions.ConnectionError:
+            return {'status': False, 'code': 'connection error'}
+
 
 
 
