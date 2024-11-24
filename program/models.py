@@ -2,6 +2,23 @@ from django.db import models
 from accounts.models import UserProfile, CoachProfile
 from nutrition.models import Nutrition
 from supplement.models import Supplement
+import datetime
+from datetime import datetime as date_time
+
+
+class Program_payment(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    price = models.IntegerField(default=0)
+    paid = models.BooleanField(default=False)
+    ref_id = models.CharField(max_length=256, null=True, blank=True)
+    authority = models.CharField(max_length=256, null=True, blank=True)
+    description = models.TextField(max_length=4000, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.id)
+
 
 
 class Workout_program(models.Model):
@@ -17,20 +34,6 @@ class Workout_program(models.Model):
 
     def __str__(self):
         return str(self.id)
-
-
-
-
-class Program_payment(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    approved = models.BooleanField(default=False)
-    description = models.TextField(max_length=4000, null=True, blank=True)
-    image = models.ImageField(upload_to="media/payment", null=True, blank=True)
-    created_at = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return str(self.id)
-
 
 
 
@@ -81,14 +84,30 @@ class Program(models.Model):
     target = models.CharField(max_length=1000,null=True,blank=True)
     experience = models.CharField(max_length=1000,null=True,blank=True)
     description = models.TextField(max_length=4000,null=True,blank=True)
-    duration_day = models.IntegerField(default=45)
-    created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now=True)
+    duration_day = models.IntegerField()
     payment = models.ForeignKey(Program_payment,on_delete=models.CASCADE,null=True,blank=True)
     nutrition_program = models.ForeignKey(Nutrition_program,on_delete=models.CASCADE,null=True,blank=True)
     workout_program = models.ForeignKey(Workout_program,on_delete=models.CASCADE,null=True,blank=True)
     supplement_program = models.ForeignKey(Supplement_program,on_delete=models.CASCADE,null=True,blank=True)
+    program_receive_at = models.DateField(null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.id) +' | '+ str(self.user) +' | '+ str(self.coach) +' | '+ str(self.created_at)
 
+    def expired(self):
+        delta = datetime.date.today() - self.program_receive_at
+        if delta.days > self.duration_day:
+            return True
+        else:
+            return False
+
+    def remaining_days(self):
+        today = date_time.now().date()
+        elapsed_days = (today - self.program_receive_at).days
+        remaining_days = self.duration_day - elapsed_days
+        if remaining_days <= 0:
+            self.status = "expired"
+            self.save()
+        return remaining_days
