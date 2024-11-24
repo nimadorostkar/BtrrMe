@@ -1,4 +1,4 @@
-from program.models import Program, Program_payment, Supplement_program, Nutrition_program, Workout_program
+from program.models import Program, Transaction, Supplement_program, Nutrition_program, Workout_program
 from rest_framework import serializers
 from accounts.serializers import CoachFullProfileSerializer,UserFullProfileSerializer,BodyVersionSerializer
 from accounts.models import BodyVersion
@@ -8,6 +8,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from supplement.serializers import SupplementSerializer
+
 
 class Workout_programSerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,9 +50,9 @@ class Nutrition_programSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class Program_paymentSerializer(serializers.ModelSerializer):
+class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Program_payment
+        model = Transaction
         fields = "__all__"
 
 
@@ -64,7 +65,7 @@ class ProgramSerializer(serializers.ModelSerializer):
 class FullProgramSerializer(serializers.ModelSerializer):
     user = UserFullProfileSerializer()
     coach = CoachFullProfileSerializer()
-    payment = Program_paymentSerializer()
+    payment = TransactionSerializer()
     supplement_program = Supplement_programSerializer()
     nutrition_program = Nutrition_programSerializer()
     workout_program = Workout_programSerializer()
@@ -76,7 +77,7 @@ class FullProgramSerializer(serializers.ModelSerializer):
 class FullProgramWithMetricSerializer(serializers.ModelSerializer):
     user = UserFullProfileSerializer()
     coach = CoachFullProfileSerializer()
-    payment = Program_paymentSerializer()
+    payment = TransactionSerializer()
     supplement_program = Supplement_programSerializer()
     nutrition_program = Nutrition_programSerializer()
     workout_program = Workout_programSerializer()
@@ -94,5 +95,4 @@ class FullProgramWithMetricSerializer(serializers.ModelSerializer):
         model = Program
         #fields = ('user', 'version')
         fields = "__all__"
-
 

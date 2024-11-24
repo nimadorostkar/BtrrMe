@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from program.serializers import ProgramSerializer,FullProgramSerializer,Program_paymentSerializer
-from program.models import Program,Program_payment
+from program.serializers import ProgramSerializer,FullProgramSerializer,TransactionSerializer
+from program.models import Program,Transaction
 from rest_framework.permissions import AllowAny
 from accounts.views.permissions import IsCoach, IsNormal
 from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
@@ -14,6 +14,7 @@ from datetime import datetime
 from openai import OpenAI
 from django.utils import timezone
 from django.http import JsonResponse
+
 
 class CustomPagination(PageNumberPagination):
     page_size = 10
@@ -168,7 +169,7 @@ class ProgramReq(APIView):
 
 
 class ProgramPay(APIView):
-    serializer_class = Program_paymentSerializer
+    serializer_class = TransactionSerializer
     permission_classes = [IsNormal]
     def post(self, *args, **kwargs):
         data = self.request.data
@@ -177,7 +178,7 @@ class ProgramPay(APIView):
         if serializer.is_valid():
             serializer.save()
             program = Program.objects.get(id=self.kwargs["id"])
-            program.payment = Program_payment.objects.get(id=serializer.data['id'])
+            program.payment = Transaction.objects.get(id=serializer.data['id'])
             program.status = "paid-and-waiting-for-program"
             program.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -187,12 +188,12 @@ class ProgramPay(APIView):
 
 
 class UserPayments(APIView):
-    serializer_class = Program_paymentSerializer
+    serializer_class = TransactionSerializer
     permission_classes = [IsNormal]
     def get(self, *args, **kwargs):
         try:
             user = UserProfile.objects.get(user=self.request.user)
-            payments = Program_payment.objects.filter(user=user)
+            payments = Transaction.objects.filter(user=user)
             serializer = self.serializer_class(payments,many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:

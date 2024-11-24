@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from program.serializers import Nutrition_programSerializer,Workout_programSerializer,Supplement_programSerializer
-from program.models import Program,Program_payment, Nutrition_program, Nutrition_program_table, Workout_program,\
+from program.models import Program,Transaction, Nutrition_program, Nutrition_program_table, Workout_program,\
     Supplement_program, Supplement_program_table
 from accounts.views.permissions import IsCoach
 from accounts.models import User, UserProfile, BodyVersion, CoachProfile

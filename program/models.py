@@ -6,7 +6,7 @@ import datetime
 from datetime import datetime as date_time
 
 
-class Program_payment(models.Model):
+class Transaction(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     price = models.IntegerField(default=0)
     paid = models.BooleanField(default=False)
@@ -85,7 +85,7 @@ class Program(models.Model):
     experience = models.CharField(max_length=1000,null=True,blank=True)
     description = models.TextField(max_length=4000,null=True,blank=True)
     duration_day = models.IntegerField()
-    payment = models.ForeignKey(Program_payment,on_delete=models.CASCADE,null=True,blank=True)
+    payment = models.ForeignKey(Transaction,on_delete=models.CASCADE,null=True,blank=True)
     nutrition_program = models.ForeignKey(Nutrition_program,on_delete=models.CASCADE,null=True,blank=True)
     workout_program = models.ForeignKey(Workout_program,on_delete=models.CASCADE,null=True,blank=True)
     supplement_program = models.ForeignKey(Supplement_program,on_delete=models.CASCADE,null=True,blank=True)

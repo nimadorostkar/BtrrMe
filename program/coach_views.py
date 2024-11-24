@@ -1,10 +1,9 @@
-from program.serializers import ProgramSerializer,FullProgramSerializer,Program_paymentSerializer, FullProgramWithMetricSerializer
+from program.serializers import ProgramSerializer,FullProgramSerializer,TransactionSerializer, FullProgramWithMetricSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from program.serializers import ProgramSerializer, FullProgramSerializer, Program_paymentSerializer
-from program.models import Program, Program_payment
+from program.models import Program, Transaction
 from rest_framework.permissions import AllowAny
 from accounts.views.permissions import IsCoach, IsNormal
 from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
