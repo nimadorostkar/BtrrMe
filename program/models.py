@@ -89,7 +89,7 @@ class Program(models.Model):
     nutrition_program = models.ForeignKey(Nutrition_program,on_delete=models.CASCADE,null=True,blank=True)
     workout_program = models.ForeignKey(Workout_program,on_delete=models.CASCADE,null=True,blank=True)
     supplement_program = models.ForeignKey(Supplement_program,on_delete=models.CASCADE,null=True,blank=True)
-    program_receive_at = models.DateField(null=True,blank=True)
+    program_receive_at = models.DateField(auto_now_add=True, null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

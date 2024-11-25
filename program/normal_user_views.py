@@ -201,11 +201,11 @@ class ProgramPay(APIView):
             "CallbackURL": settings.ZARIN_CALL_BACK + str(program.id) + "/",
             "OrderID": program.id,
             "wages": [{
-                "iban": "33333333333",
-                "amount": Decimal(program.price())*Decimal("0.15"),
+                "iban": "IR630560611828005101033801",
+                "amount": str( Decimal(program.price())*Decimal("0.15") ),
                 "description": "تسهیم سود فروش از برنامه"
-              }],
-            }
+             }],
+        }
         data = json.dumps(data)
         headers = {'content-type': 'application/json', 'content-length': str(len(data))}
 
@@ -218,10 +218,9 @@ class ProgramPay(APIView):
                 print('---------------')
                 print(response)
                 if response['Status'] == 100:
-                    transaction = Transaction(user=program.user,price=program.price(),paid=True,authority=response['Authority'])
+                    transaction = Transaction(user=program.user,price=program.price(),authority=response['Authority'])
                     transaction.save()
                     program.payment = transaction
-                    program.status = "paid-and-waiting-for-program"
                     program.save()
                     transaction_serializer = TransactionSerializer(transaction)
                     data = {'status': True, 'url': settings.ZP_API_STARTPAY + str(response['Authority']),
@@ -235,6 +234,51 @@ class ProgramPay(APIView):
             return {'status': False, 'code': 'timeout'}
         except requests.exceptions.ConnectionError:
             return {'status': False, 'code': 'connection error'}
+
+
+
+
+
+class ProgramPayVerify(APIView):
+    @transaction.atomic
+    def get(self, *args, **kwargs):
+        status = self.request.query_params.get("Status")
+        authority = self.request.query_params.get("Authority")
+        id = self.kwargs.get("id")
+
+        if not authority or status != "OK":
+            return redirect('https://btrr.me/dashboard/callback?success=notok')
+            #return HttpResponse("payment faild...", content_type='text/plain')
+
+        try:
+            program = Program.objects.get(id=id)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        data = {
+            "MerchantID": settings.ZARRINPAL_MERCHANT_ID,
+            "Amount": program.price(),
+            "Authority": authority,
+        }
+        data = json.dumps(data)
+        headers = {'content-type': 'application/json', 'content-length': str(len(data))}
+        response = requests.post(settings.ZP_API_VERIFY, data=data, headers=headers)
+
+        if response.status_code == 200:
+            response = response.json()
+            if response['Status'] == 100:
+                program.status = "paid-and-waiting-for-program"
+                transaction = program.payment
+                transaction.authority = authority
+                transaction.ref_id = response['RefID']
+                transaction.paid = True
+                transaction.save()
+                program.save()
+                return redirect(f'https://btrr.me/dashboard/callback?success=ok&payment_id={response["RefID"]}')
+                #return HttpResponse("payment done, RefID={}".format(response['RefID']), content_type='text/plain')
+            else:
+                return SuccessResponse(data={'status': False, 'details': 'Program already paid' })
+        return SuccessResponse(data=response.content)
 
 
 
