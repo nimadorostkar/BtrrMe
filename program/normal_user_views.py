@@ -189,12 +189,9 @@ class ProgramPay(APIView):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        print('-----')
-        print(program.price())
-
         data = {
             "MerchantID": settings.ZARRINPAL_MERCHANT_ID,
-            "Amount": program.price(),
+            "Amount": int(program.price()),
             "Description": "هزینه دریافت برنامه آنلاین از بترمی",
             "Authority": authority,
             "Phone": program.user.user.phone_number,
@@ -202,7 +199,7 @@ class ProgramPay(APIView):
             "OrderID": program.id,
             "wages": [{
                 "iban": "IR630560611828005101033801",
-                "amount": str( Decimal(program.price())*Decimal("0.15") ),
+                "amount": int( Decimal(program.price())*Decimal("0.15") ),
                 "description": "تسهیم سود فروش از برنامه"
              }],
         }
