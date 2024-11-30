@@ -14,6 +14,7 @@ class Nutrition(models.Model):
     fiber = models.DecimalField(default=0, max_digits=6, decimal_places=2)
     calorie = models.DecimalField(default=0, max_digits=6, decimal_places=2)
     img = models.URLField(null=True,blank=True)
+    image_file = models.ImageField(upload_to="media/nutritions", default="media/nutritions/default.png")
 
     def __str__(self):
         return str(self.name) +' | '+ str(self.amount) +' | '+ str(self.calorie)
