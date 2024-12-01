@@ -6,7 +6,10 @@ from accounts.serializers import UserSerializer, UserProfileSerializer, BodyVers
 from accounts.models import User, UserProfile, BodyVersion
 from accounts.views.permissions import IsNormal
 from django.shortcuts import get_object_or_404
-
+from program.models import Program
+from django.contrib.humanize.templatetags.humanize import naturaltime
+from django.http import HttpResponse,JsonResponse
+from datetime import datetime
 
 
 class NormalFull(APIView):
@@ -184,3 +187,43 @@ class VersionItem(APIView):
             return Response("Version deleted", status=status.HTTP_200_OK)
         except:
             return Response("Something went wrong, try again", status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+class Updates(APIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsNormal]
+
+    def get(self, *args, **kwargs):
+        try:
+            profile = UserProfile.objects.get(user=self.request.user)
+            update_list = []
+
+            version = BodyVersion.objects.filter(user=profile)
+            for Ver in version:
+                natural_date = naturaltime(Ver.created_at)
+                metric = f"متریک بدنی جدید در {natural_date} اضافه شد"
+                update_list.append(metric)
+                activity = f"سطح فعالیت به روز شد به {Ver.activity_type}"
+                update_list.append(activity)
+
+            program = Program.objects.filter(user=profile, status="paid-and-waiting-for-program")
+            for Pro in program:
+                natural_date = naturaltime(Pro.created_at)
+                new_program = f"درخواست برنامه جدید در {natural_date}"
+                update_list.append(new_program)
+
+            complete_program = Program.objects.filter(user=profile, status="completed")
+            for ComPro in complete_program:
+                converted_datetime = datetime.combine(ComPro.program_receive_at, datetime.min.time())
+                natural_date = naturaltime(converted_datetime)
+                com_program = f"برنامه شما تکمیل شد در {natural_date}"
+                update_list.append(com_program)
+
+            return Response(update_list, status=status.HTTP_200_OK)
+
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

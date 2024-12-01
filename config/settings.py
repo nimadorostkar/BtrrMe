@@ -27,6 +27,7 @@ DJANGO_APPS = (
     "django.contrib.staticfiles",
     "django.contrib.admin",
     "django.contrib.admindocs",
+    'django.contrib.humanize',
     "channels",
 )
 THIRD_PARTY_APPS = (
@@ -202,10 +203,12 @@ STORAGES = {
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
-LANGUAGE_CODE = "en-us"
+#LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = 'fa'
 TIME_ZONE = "Asia/Tehran"
 USE_I18N = True
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)

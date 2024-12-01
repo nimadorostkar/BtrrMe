@@ -3,7 +3,7 @@ from accounts.views import Logout,Profile,Refresh,RefreshAccess,SendOTP,VerifyOT
     CompleteRegistration,Coach,CoachGallery,CoachGalleryItem,CoachCertificate,\
     CoachCertificateItem,CoachList,CoachItam,CoachPost,NormalUser,UserOverview,\
     NormalUserBodyVersion,LastBodyVersion,CoachPostItem,CoachPostCats,CoachWorkExperience,\
-    WorkExperienceItem,CoachAthletes,CoachCounts,VersionItem,CoachFull,NormalFull
+    WorkExperienceItem,CoachAthletes,CoachCounts,VersionItem,CoachFull,NormalFull,Updates
 
 
 urlpatterns = [
@@ -37,4 +37,5 @@ urlpatterns = [
     path("body-version", NormalUserBodyVersion.as_view(), name="body-version"),
     path("last-body-version", LastBodyVersion.as_view(), name="last-body-version"),
     path("version-item/<int:id>", VersionItem.as_view(), name="version-item"),
+    path("updates", Updates.as_view(), name="updates"),
 ]
