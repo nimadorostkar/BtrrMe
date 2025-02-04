@@ -20,5 +20,3 @@ def send_sms_otp(phone_number: str, code: str) -> bool:
     except Exception as e:
         print(e)
     return True
-
-
